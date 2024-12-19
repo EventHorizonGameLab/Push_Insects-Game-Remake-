@@ -3,18 +3,20 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class GridGenerator : MonoBehaviour
 {
-    public int rows = 5; // Numero di righe
-    public int columns = 5; // Numero di colonne
-    public float cubeSize = 1f; // Dimensione dei cubi
-    public float scaleY = 1f; // Scala in Y
-    public bool singleCollider = false; // Flag per un unico collider
-    private GameObject gridParent; // Per organizzare i cubetti
-    private GameObject gridCollider; // Collider unico
+    public int rows = 5;
+    public int columns = 5;
+    public float cubeSize = 1f;
+    public float scaleY = 1f;
+    public bool singleCollider = false;
 
-    // Metodo per generare la griglia
+    public CameraAligner cameraAligner;
+
+    private GameObject gridParent;
+
     public void GenerateGrid()
     {
-        DeleteGrid(); // Rimuovi qualsiasi griglia esistente
+        DeleteGrid();
+
         gridParent = new GameObject("GridParent");
 
         for (int row = 0; row < rows; row++)
@@ -26,15 +28,13 @@ public class GridGenerator : MonoBehaviour
                 cube.transform.position = new Vector3(col * cubeSize, 0, row * cubeSize);
                 cube.transform.localScale = new Vector3(cubeSize, scaleY, cubeSize);
 
-                if (!singleCollider)
+                if (singleCollider)
                 {
-                    // Mantieni il collider individuale
-                    cube.AddComponent<BoxCollider>();
+                    DestroyImmediate(cube.GetComponent<Collider>());
                 }
                 else
                 {
-                    // Rimuovi il collider individuale
-                    DestroyImmediate(cube.GetComponent<Collider>());
+                    cube.AddComponent<BoxCollider>();
                 }
             }
         }
@@ -43,12 +43,16 @@ public class GridGenerator : MonoBehaviour
         {
             AddUnifiedCollider();
         }
+
+        if (cameraAligner != null)
+        {
+            cameraAligner.AlignCameraToGrid(rows, columns, cubeSize);
+        }
     }
 
-    // Metodo per aggiungere un collider unico
     private void AddUnifiedCollider()
     {
-        gridCollider = new GameObject("GridCollider");
+        GameObject gridCollider = new GameObject("GridCollider");
         gridCollider.transform.parent = gridParent.transform;
 
         BoxCollider collider = gridCollider.AddComponent<BoxCollider>();
@@ -59,7 +63,6 @@ public class GridGenerator : MonoBehaviour
         collider.center = new Vector3(gridWidth / 2f - cubeSize / 2f, 0, gridHeight / 2f - cubeSize / 2f);
     }
 
-    // Metodo per eliminare la griglia
     public void DeleteGrid()
     {
         if (gridParent != null)
