@@ -9,6 +9,7 @@ public class GridGenerator : MonoBehaviour
     public float scaleY = 1f;
     public bool singleCollider = false;
 
+    public Material blackMaterial;
     public CameraAligner cameraAligner;
 
     private GameObject gridParent;
@@ -16,7 +17,6 @@ public class GridGenerator : MonoBehaviour
     public void GenerateGrid()
     {
         DeleteGrid();
-
         gridParent = new GameObject("GridParent");
 
         for (int row = 0; row < rows; row++)
@@ -28,13 +28,23 @@ public class GridGenerator : MonoBehaviour
                 cube.transform.position = new Vector3(col * cubeSize, 0, row * cubeSize);
                 cube.transform.localScale = new Vector3(cubeSize, scaleY, cubeSize);
 
-                if (singleCollider)
+                if ((row + col) % 2 == 0)
                 {
-                    DestroyImmediate(cube.GetComponent<Collider>());
+                    // Default white color
                 }
                 else
                 {
+                    Renderer renderer = cube.GetComponent<Renderer>();
+                    renderer.material = blackMaterial;
+                }
+
+                if (!singleCollider)
+                {
                     cube.AddComponent<BoxCollider>();
+                }
+                else
+                {
+                    DestroyImmediate(cube.GetComponent<Collider>());
                 }
             }
         }
