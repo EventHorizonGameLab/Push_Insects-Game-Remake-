@@ -6,14 +6,18 @@ public class BlockHandler : MonoBehaviour
 {
     [SerializeField] Block.TypeOfBlock TypeOfBlock;
 
+   
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
         MenageComponent<Block_Movable_X>(TypeOfBlock == Block.TypeOfBlock.MoveOnX);
-        MenageComponent<Block_Movable_Z>( TypeOfBlock == Block.TypeOfBlock.MoveOnZ);
+        MenageComponent<Block_Movable_Z>(TypeOfBlock == Block.TypeOfBlock.MoveOnZ);
         MenageComponent<Block_Movable_XZ>(TypeOfBlock == Block.TypeOfBlock.MoveOnBothAxis);
         MenageComponent<Block_FixedPosition>(TypeOfBlock == Block.TypeOfBlock.Fixed);
     }
+
+
 
     private void MenageComponent<T>(bool shouldHaveComponent) where T : Component
     {
@@ -28,7 +32,6 @@ public class BlockHandler : MonoBehaviour
                 if (component == null)
                 {
                     gameObject.AddComponent<T>();
-                    
                 }
             }
             else
@@ -40,7 +43,7 @@ public class BlockHandler : MonoBehaviour
             }
         };
     }
-                   
+
 #endif
 }
 
