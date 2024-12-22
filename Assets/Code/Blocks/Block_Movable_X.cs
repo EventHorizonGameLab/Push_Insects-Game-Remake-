@@ -10,9 +10,11 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private float zDepth;
     private bool isDragging = false;
     private Vector3 lastValidPosition;
+    private Vector3 positionBeforeDrag;
+    private Vector3 positionsAfterDrag;
+    private Vector3 dragOffset;
 
-    private float maxX;
-    private float minX;
+    private float maxX, minX;
 
     private void Awake()
     {
@@ -29,9 +31,12 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        positionBeforeDrag = transform.position;
         zDepth = Camera.main.WorldToScreenPoint(transform.position).z;
         isDragging = true;
         lastValidPosition = transform.position;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, zDepth));
+        dragOffset = transform.position - worldPosition;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -39,7 +44,8 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (!isDragging) return;
 
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, zDepth));
-        Vector3 targetPosition = new Vector3(worldPosition.x, transform.position.y, transform.position.z);
+        Vector3 targetPosition = worldPosition + dragOffset;
+        targetPosition = new Vector3(targetPosition.x, transform.position.y, transform.position.z);
 
         if (targetPosition.x >= minX && targetPosition.x <= maxX)
         {
@@ -73,39 +79,32 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         rb.MovePosition(alignedPosition);
+        positionsAfterDrag = alignedPosition;
+        GiveMoveInfo();
     }
 
     private void UpdateLimitsWithRaycast()
     {
         Vector3 halfExtents = blockCollider.bounds.extents;
-        Vector3 rightOrigin = transform.position + Vector3.right * halfExtents.x;
-        Vector3 leftOrigin = transform.position + Vector3.left * halfExtents.x;
+        Vector3 centerOrigin = transform.position;
 
-        if (Physics.Raycast(rightOrigin, Vector3.right, out RaycastHit hitRight, Mathf.Infinity))
-        {
+        if (Physics.Raycast(centerOrigin, Vector3.right, out RaycastHit hitRight, Mathf.Infinity) && hitRight.collider != blockCollider)
             maxX = hitRight.point.x - halfExtents.x;
-        }
         else
-        {
             maxX = Mathf.Infinity;
-        }
 
-        if (Physics.Raycast(leftOrigin, Vector3.left, out RaycastHit hitLeft, Mathf.Infinity))
-        {
+        if (Physics.Raycast(centerOrigin, Vector3.left, out RaycastHit hitLeft, Mathf.Infinity) && hitLeft.collider != blockCollider)
             minX = hitLeft.point.x + halfExtents.x;
-        }
         else
-        {
             minX = -Mathf.Infinity;
-        }
 
-        Debug.DrawRay(rightOrigin, Vector3.right * (maxX - rightOrigin.x), Color.green);
-        Debug.DrawRay(leftOrigin, Vector3.left * (leftOrigin.x - minX), Color.red);
+        Debug.DrawRay(centerOrigin, Vector3.right * (maxX - centerOrigin.x), Color.green);
+        Debug.DrawRay(centerOrigin, Vector3.left * (centerOrigin.x - minX), Color.red);
     }
 
     private float RoundToNearestHalf(float value)
     {
-        float roundedValue = Mathf.Round(value * 2f) / 2f; // es: 1.47 *2 = 2.94, roundato 3, diviso 2 = 1.5 [ottengo multiplo di o.5]
+        float roundedValue = Mathf.Round(value * 2f) / 2f;
 
         if (Mathf.Abs(roundedValue % 1) < Mathf.Epsilon)
         {
@@ -113,5 +112,11 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         return roundedValue;
+    }
+
+    void GiveMoveInfo()
+    {
+        if (positionsAfterDrag != positionBeforeDrag) { Debug.Log("Mossa usata"); }
+        else { Debug.Log("Mossa non usata"); }
     }
 }
