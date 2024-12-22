@@ -21,6 +21,8 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
         blockCollider = GetComponent<Collider>();
     }
 
