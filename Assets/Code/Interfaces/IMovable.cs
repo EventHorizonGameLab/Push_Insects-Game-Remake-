@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IMovable 
+public interface IBlock
 {
-    void Move();
+    
 }
