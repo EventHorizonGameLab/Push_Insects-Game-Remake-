@@ -7,6 +7,7 @@ public class GridGenerator : MonoBehaviour
     public int columns = 5;
     public float cubeSize = 1f;
     public float scaleY = 1f;
+    public float offsetZ = 0f; // Nuova variabile per l'offset Z
     public bool singleCollider = false;
 
     public Material blackMaterial;
@@ -25,7 +26,9 @@ public class GridGenerator : MonoBehaviour
             {
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.transform.parent = gridParent.transform;
-                cube.transform.position = new Vector3(col * cubeSize, 0, row * cubeSize);
+
+                // Posizionamento con offset Z
+                cube.transform.position = new Vector3(col * cubeSize, 0, row * cubeSize + offsetZ);
                 cube.transform.localScale = new Vector3(cubeSize, scaleY, cubeSize);
 
                 if ((row + col) % 2 == 0)
@@ -70,7 +73,7 @@ public class GridGenerator : MonoBehaviour
         float gridHeight = rows * cubeSize;
 
         collider.size = new Vector3(gridWidth, scaleY, gridHeight);
-        collider.center = new Vector3(gridWidth / 2f - cubeSize / 2f, 0, gridHeight / 2f - cubeSize / 2f);
+        collider.center = new Vector3(gridWidth / 2f - cubeSize / 2f, 0, gridHeight / 2f - cubeSize / 2f + offsetZ);
     }
 
     public void DeleteGrid()
