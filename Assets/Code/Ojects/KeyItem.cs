@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class KeyItem : MonoBehaviour
 {
-    [SerializeField] Block_Door parent;
-    private void OnTriggerEnter(Collider other)
+    [SerializeField] Block_Door doorParent;
+    bool interacted;
+    private void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent<IPlayer>(out _))
+        if (other.gameObject.CompareTag("Player") && GameManager.instance.PlayerIsDragging() == false && !interacted)
         {
-            // lgoica per chiamare evento o metodo nel parent per aprire la porta
+            interacted = true;
+            doorParent.OpenDoor();
         }
     }
 }

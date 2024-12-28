@@ -33,6 +33,7 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        GameManager.OnPlayerDragging(true);
         positionBeforeDrag = transform.position;
         zDepth = Camera.main.WorldToScreenPoint(transform.position).z;
         isDragging = true;
@@ -83,6 +84,7 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         rb.MovePosition(alignedPosition);
         positionsAfterDrag = alignedPosition;
         GiveMoveInfo();
+        GameManager.OnPlayerDragging(false);
     }
 
     private void UpdateLimitsWithRaycast()

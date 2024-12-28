@@ -1,16 +1,20 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Block_Door : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    Rigidbody rb;
+    GameObject keyChild;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
+        rb = GetComponent<Rigidbody>();
         
+        keyChild = transform.GetChild(0).gameObject;
+    }
+    public void OpenDoor()
+    {
+        keyChild.SetActive(false);
+        transform.DOMove(rb.position+Vector3.up * 10, 2);
     }
 }
