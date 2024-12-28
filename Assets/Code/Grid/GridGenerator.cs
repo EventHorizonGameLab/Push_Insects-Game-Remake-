@@ -132,6 +132,17 @@ public class GridGenerator : MonoBehaviour
         CreateWall(new Vector3(gridWidth, wallHeight / 2f, gridHeight - lowerWallHeight / 2f - cubeSize / 2f + offsetZ),
                    new Vector3(cubeSize, wallHeight, lowerWallHeight), wallsParent);
 
+        // Aggiungere collider nello spazio vuoto (uscita)
+        GameObject exitCollider = new GameObject("ExitCollider");
+        exitCollider.transform.parent = wallsParent.transform;
+
+        BoxCollider exitBoxCollider = exitCollider.AddComponent<BoxCollider>();
+        exitBoxCollider.size = new Vector3(1f, wallHeight, cubeSize);
+        exitCollider.transform.position = new Vector3(gridWidth, wallHeight / 2f, exitPositionZ - cubeSize);
+
+        // Impostare il layer al numero 7
+        exitCollider.layer = 7;
+
         // Altri muri (alto, sinistra, basso)
         CreateWall(new Vector3(gridWidth / 2f - cubeSize / 2f, wallHeight / 2f, -cubeSize + offsetZ),
                    new Vector3(gridWidth, wallHeight, cubeSize), wallsParent); // Muro superiore
