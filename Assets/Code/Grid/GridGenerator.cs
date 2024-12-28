@@ -124,22 +124,23 @@ public class GridGenerator : MonoBehaviour
 
         // Muro destro superiore
         float upperWallHeight = exitRow * cubeSize;
-        CreateWall(new Vector3(gridWidth, wallHeight / 2f, upperWallHeight / 2f - cubeSize / 2f),
+        CreateWall(new Vector3(gridWidth, wallHeight / 2f, upperWallHeight / 2f - cubeSize / 2f + offsetZ),
                    new Vector3(cubeSize, wallHeight, upperWallHeight), wallsParent);
 
         // Muro destro inferiore
         float lowerWallHeight = gridHeight - (exitRow + 1) * cubeSize;
-        CreateWall(new Vector3(gridWidth, wallHeight / 2f, gridHeight - lowerWallHeight / 2f - cubeSize / 2f),
+        CreateWall(new Vector3(gridWidth, wallHeight / 2f, gridHeight - lowerWallHeight / 2f - cubeSize / 2f + offsetZ),
                    new Vector3(cubeSize, wallHeight, lowerWallHeight), wallsParent);
 
         // Altri muri (alto, sinistra, basso)
-        CreateWall(new Vector3(gridWidth / 2f - cubeSize / 2f, wallHeight / 2f, -cubeSize),
+        CreateWall(new Vector3(gridWidth / 2f - cubeSize / 2f, wallHeight / 2f, -cubeSize + offsetZ),
                    new Vector3(gridWidth, wallHeight, cubeSize), wallsParent); // Muro superiore
-        CreateWall(new Vector3(gridWidth / 2f - cubeSize / 2f, wallHeight / 2f, gridHeight),
+        CreateWall(new Vector3(gridWidth / 2f - cubeSize / 2f, wallHeight / 2f, gridHeight + offsetZ),
                    new Vector3(gridWidth, wallHeight, cubeSize), wallsParent); // Muro inferiore
-        CreateWall(new Vector3(-cubeSize, wallHeight / 2f, gridHeight / 2f - cubeSize / 2f),
+        CreateWall(new Vector3(-cubeSize, wallHeight / 2f, gridHeight / 2f - cubeSize / 2f + offsetZ),
                    new Vector3(cubeSize, wallHeight, gridHeight), wallsParent); // Muro sinistro
     }
+
 
 
 
