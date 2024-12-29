@@ -1,14 +1,17 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IBlock
+public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IBlock, IPointerDownHandler
 {
     private Rigidbody rb;
     private Collider blockCollider;
     private float zDepth;
     private bool isDragging = false;
+    private bool exitAvailable;
+    private bool isSliding;
     private Vector3 lastValidPosition;
     private Vector3 positionBeforeDrag;
     private Vector3 positionsAfterDrag;
@@ -27,15 +30,22 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         blockCollider = GetComponent<Collider>();
+        gameObject.layer = 8;
     }
 
     private void Update()
     {
+        CheckForExit();
         UpdateLimitsWithRaycast();
+    }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        SlideToExitIfAvailable();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (isSliding) return;
         GameManager.OnPlayerDragging(true);
         positionBeforeDrag = transform.position;
         zDepth = Camera.main.WorldToScreenPoint(transform.position).z;
@@ -49,7 +59,7 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!isDragging) return;
+        if (!isDragging || isSliding) return;
 
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, zDepth));
         Vector3 targetPosition = worldPosition + dragOffset;
@@ -86,6 +96,7 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (isSliding) return;
         isDragging = false;
 
         Vector3 halfExtents = blockCollider.bounds.extents;
@@ -167,10 +178,32 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         return roundedValue;
     }
 
+    void CheckForExit()
+    {
+        if (Physics.Raycast(transform.position, Vector3.right, out RaycastHit hitCheck, 1000))
+        {
+            if (hitCheck.transform.gameObject.layer == 7 && !isDragging) exitAvailable = true;
+            else exitAvailable = false;
+        }
+    }
+
+    void SlideToExitIfAvailable()
+    {
+        if (exitAvailable)
+        {
+            isSliding = true;
+            rb.isKinematic = false;
+            rb.AddForce(Vector3.right * 50, ForceMode.VelocityChange);
+        }
+
+    }
+
     void GiveMoveInfo()
     {
         if (positionsAfterDrag != positionBeforeDrag) { Debug.Log("Mossa usata"); }
         else { Debug.Log("Mossa non usata"); }
     }
+
+    
 }
 
