@@ -15,6 +15,8 @@ public class BlockHandler : MonoBehaviour
         MenageComponent<Block_Movable_Z>(TypeOfBlock == Block.TypeOfBlock.MoveOnZ);
         MenageComponent<Block_Movable_XZ>(TypeOfBlock == Block.TypeOfBlock.MoveOnBothAxis);
         MenageComponent<Block_FixedPosition>(TypeOfBlock == Block.TypeOfBlock.Fixed);
+        MenageComponent<Block_Sliding_X>(TypeOfBlock == Block.TypeOfBlock.SlideOnX);
+        MenageComponent<Block_Sliding_Z>(TypeOfBlock == Block.TypeOfBlock.SlideOnZ);
     }
 
 
