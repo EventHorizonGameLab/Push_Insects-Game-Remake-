@@ -85,7 +85,7 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, slideSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, slideSpeed * Time.fixedDeltaTime);
             yield return null;
         }
         transform.position = targetPosition;
