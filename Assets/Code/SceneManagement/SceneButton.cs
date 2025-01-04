@@ -28,7 +28,7 @@ public class SceneButton : MonoBehaviour
         var button = GetComponent<UnityEngine.UI.Button>();
         if (button != null)
         {
-            button.onClick.AddListener(() => sceneHandler.LoadSceneFromName(sceneName)); CameraHandler.OnLevelLoaded?.Invoke();
+            button.onClick.AddListener(() => { sceneHandler.LoadSceneFromName(sceneName); CameraHandler.OnLevelLoaded?.Invoke(); });
         }
     }
 }
