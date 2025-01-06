@@ -13,7 +13,7 @@ public class GridGenerator : MonoBehaviour
     public GridSize gridSize = GridSize.Grid6x6;
     public float cubeSize = 1f;
     public float scaleY = 1f;
-    public float offsetZ = 0f; // Offset Z per la griglia
+    public int offsetZ = 0; // Offset Z per la griglia
     public bool singleCollider = false;
 
     public Material blackMaterial;
@@ -139,6 +139,7 @@ public class GridGenerator : MonoBehaviour
         BoxCollider exitBoxCollider = exitCollider.AddComponent<BoxCollider>();
         exitBoxCollider.size = new Vector3(1f, wallHeight, cubeSize);
         exitCollider.transform.position = new Vector3(gridWidth, wallHeight / 2f, exitPositionZ - cubeSize);
+        exitCollider.gameObject.AddComponent<Exit>();
 
         // Impostare il layer al numero 7
         exitCollider.layer = 7;

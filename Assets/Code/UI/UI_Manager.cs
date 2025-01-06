@@ -13,6 +13,8 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject levelMenuPanel;
     [SerializeField] GameObject optionPanel;
     [SerializeField] GameObject inGameView;
+    [Header("Buttons")]
+    [SerializeField] GameObject backButton;
     [Header("Texts")]
     [SerializeField] TMP_Text record_txt;
     [SerializeField] TMP_Text currentMoves_txt;
@@ -52,6 +54,7 @@ public class UI_Manager : MonoBehaviour
         levelMenuPanel.SetActive(false);
         inGameView.SetActive(true); // activate UI game only
         optionPanel.SetActive(false);
+        backButton.SetActive(false);
         record_txt.text = levelData.GetRecord("record").ToString();
         currentMoves_txt.text = "0"; 
     }
