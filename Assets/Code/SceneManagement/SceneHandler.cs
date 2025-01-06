@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneHandler : MonoBehaviour
 {
+    public static Action OnSceneLoaded;
+
     [SerializeField] private GameObject loadingImage;
 
     private void Awake()
@@ -50,5 +53,7 @@ public class SceneHandler : MonoBehaviour
         {
             loadingImage.SetActive(false);
         }
+
+        GameManager.OnStartingGame();
     }
 }

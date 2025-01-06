@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
 public class SceneButton : MonoBehaviour
@@ -25,10 +26,14 @@ public class SceneButton : MonoBehaviour
             return;
         }
 
-        var button = GetComponent<UnityEngine.UI.Button>();
+        var button = GetComponent<Button>();
         if (button != null)
         {
-            button.onClick.AddListener(() => { sceneHandler.LoadSceneFromName(sceneName); CameraHandler.OnLevelLoaded?.Invoke(); });
+            button.onClick.AddListener(() => {
+                sceneHandler.LoadSceneFromName(sceneName); 
+                CameraHandler.OnLevelLoaded?.Invoke();
+     
+            });
         }
     }
 }

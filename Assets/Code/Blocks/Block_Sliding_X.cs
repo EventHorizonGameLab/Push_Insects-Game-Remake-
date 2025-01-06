@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
     [SerializeField] private float slideSpeed = 30f;
     [SerializeField] private float dragThreshold = 0.25f;
@@ -30,13 +31,14 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         blockCollider = GetComponent<Collider>();
     }
 
-    private void Update()
+    public void OnPointerDown(PointerEventData eventData)
     {
         UpdateLimitsWithRaycast();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        
         if (isSliding) return;
 
         positionBeforeSlide = transform.position;
@@ -54,7 +56,8 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         float clampedX = Mathf.Clamp(targetPosition.x, minX, maxX);
 
-        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
+        Vector3 newPosition = new Vector3(clampedX, transform.position.y, transform.position.z);
+        rb.MovePosition(newPosition);
         dragDirection = targetPosition.x > positionBeforeSlide.x ? 1 : -1;
     }
 
@@ -81,12 +84,12 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         StartCoroutine(SlideToTarget(new Vector3(targetX, transform.position.y, transform.position.z)));
     }
 
-    private System.Collections.IEnumerator SlideToTarget(Vector3 targetPosition)
+    private IEnumerator SlideToTarget(Vector3 targetPosition)
     {
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, slideSpeed * Time.fixedDeltaTime);
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         transform.position = targetPosition;
         positionAfterSlide = transform.position;
@@ -98,7 +101,7 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (Vector3.Distance(positionAfterSlide, positionBeforeSlide) > 0.01f)
         {
-            Debug.Log("Mossa usata");
+            GameManager.OnMoveMade?.Invoke();
         }
         else
         {
@@ -108,7 +111,7 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private void ResetToInitialPosition()
     {
-        transform.position = positionBeforeSlide;
+        rb.MovePosition(positionBeforeSlide);
         positionAfterSlide = positionBeforeSlide; // Aggiorna la posizione finale per la verifica
         CheckMoveUsed();
     }
@@ -132,4 +135,6 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         Debug.DrawRay(centerOrigin, Vector3.right * (maxX - centerOrigin.x), Color.green);
         Debug.DrawRay(centerOrigin, Vector3.left * (centerOrigin.x - minX), Color.red);
     }
+
+    
 }

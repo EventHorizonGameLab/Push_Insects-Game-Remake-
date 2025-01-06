@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class UI_Manager : MonoBehaviour
 {
-    public static Action OnUpdateMoves;
+    public static Action<int, int> OnUpdateMoves;
+    public static Action<LevelData> OnGivingGameUI;
 
     [Header("Panels")]
     [SerializeField] GameObject mainMenuPanel;
@@ -14,32 +15,51 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject inGameView;
     [Header("Texts")]
     [SerializeField] TMP_Text record_txt;
-    [SerializeField] TMP_Text currentMoves;
+    [SerializeField] TMP_Text currentMoves_txt;
 
     private void Awake()
     {
-        Init();
+        InitMain();
     }
     private void OnEnable()
     {
-        
+        OnGivingGameUI += InitGameUI;
+        OnUpdateMoves += UpdateMoves;
     }
     private void OnDisable()
     {
-        
+        OnGivingGameUI -= InitGameUI;
+        OnUpdateMoves -= UpdateMoves;
     }
     private void Start()
     {
         
     }
 
-    void Init()
+    void InitMain()
     {
         mainMenuPanel.SetActive(true);
         levelMenuPanel.SetActive(false);
         inGameView.SetActive(false);
         optionPanel.SetActive(false);
         record_txt.text = string.Empty;
-        currentMoves.text = string.Empty;
+        currentMoves_txt.text = string.Empty;
     }
+
+    void InitGameUI(LevelData levelData)
+    {
+        mainMenuPanel.SetActive(false);
+        levelMenuPanel.SetActive(false);
+        inGameView.SetActive(true); // activate UI game only
+        optionPanel.SetActive(false);
+        record_txt.text = levelData.GetRecord("record").ToString();
+        currentMoves_txt.text = "0"; 
+    }
+
+    void UpdateMoves(int moves, int record)
+    {
+        currentMoves_txt.text = moves.ToString();
+        record_txt.text = record.ToString();
+    }
+    
 }  

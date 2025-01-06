@@ -33,14 +33,11 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         gameObject.layer = 8;
     }
 
-    private void Update()
-    {
-        CheckForExit();
-        UpdateLimitsWithRaycast();
-    }
     public void OnPointerDown(PointerEventData eventData)
     {
+        CheckForExit();
         SlideToExitIfAvailable();
+        UpdateLimitsWithRaycast();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -200,7 +197,7 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     void GiveMoveInfo()
     {
-        if (positionsAfterDrag != positionBeforeDrag) { Debug.Log("Mossa usata"); }
+        if (positionsAfterDrag != positionBeforeDrag) { GameManager.OnMoveMade?.Invoke(); }
         else { Debug.Log("Mossa non usata"); }
     }
 
