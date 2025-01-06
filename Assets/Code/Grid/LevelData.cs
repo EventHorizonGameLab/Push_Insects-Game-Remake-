@@ -7,14 +7,14 @@ public class LevelData : MonoBehaviour
     public void SaveRecord(string key, int value)
     {
         string uniqueKey = GetUniqueKey(key);
-        PlayerPrefs.SetInt(key, value);
+        PlayerPrefs.SetInt(uniqueKey, value);
         PlayerPrefs.Save();
     }
 
     public int GetRecord(string record)
     {
-        if (PlayerPrefs.HasKey(record)) return PlayerPrefs.GetInt(record);
-        else return 0;
+        string uniqueKey = GetUniqueKey(record);
+        return PlayerPrefs.HasKey(uniqueKey) ? PlayerPrefs.GetInt(uniqueKey) : 0;
     }
 
     string GetUniqueKey(string baseKey)=> $"{baseKey}_Level_{levelID}";

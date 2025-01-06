@@ -16,12 +16,21 @@ public class MarcoEditorWindow : EditorWindow
         "1. Create a Cube GameObject.\n" +
         "2. Reset its Transform.\n" +
         "3. Set the desired size (<i>insert the values in the Transform for precision</i>).\n" +
-        "4. Set the Y position to always be <b>0.5</b>.\n" +
+        "4. Set the Y to <b>0.55</b> if you use a normal sized Box Collider (reccomended) .\n" +
         "5. Add the \"<b>BlockHandler</b>\" script.\n" +
         "6. Now you can select the block type at any time from the script.\n" +
         "7. All the necessary components will be automatically added and configured.\n\n" +
         "<color=yellow>Important:</color> For the game to function, the Camera must have the " +
-        "\"<b>Physics Raycaster</b>\" component, and the \"<b>Max Ray Interactions</b>\" parameter must be set to <b>30</b>.";
+        "\"<b>Physics Raycaster</b>\" component, and the \"<b>Max Ray Interactions</b>\" parameter must be set to <b>30</b>.\n\n" +
+        "<b>BUILDING A LEVEL (how to proceed)</b>\n\n" +
+        "1. Create a new Scene.\n" +
+        "2. Build the level using the Grid Tool (recommended <i>offsetZ = -1</i>) and the BlockHandler.\n" +
+        "3. Properly set the Camera with the \"<b>CameraAligner</b>\" component (recommended <i>totalPadding = 0.5</i>).\n" +
+        "4. Add an empty GameObject and assign it the \"<b>LevelData</b>\" script.\n" +
+        "5. Assign a unique numeric ID to \"<b>LevelID</b>\" in the LevelData component.\n\n" +
+        "<b>INITIALIZING THE GAME</b>\n\n" +
+        "1. Instructions will be shown in the meeting and later documented.\n";
+
 
     // Aggiungi l'opzione al menu dell'Editor
     [MenuItem("Marco/Instructions")]
@@ -29,8 +38,8 @@ public class MarcoEditorWindow : EditorWindow
     {
         // Crea e mostra la finestra con dimensioni minime aumentate
         MarcoEditorWindow window = GetWindow<MarcoEditorWindow>("Finestra Personalizzata");
-        window.maxSize = new Vector2(1000, 700);
-        window.minSize = new Vector2(1000, 700); // Dimensioni minime
+        window.maxSize = new Vector2(1000, 1000);
+        window.minSize = new Vector2(1000, 1000); // Dimensioni minime
         window.Show();
     }
 
@@ -42,7 +51,7 @@ public class MarcoEditorWindow : EditorWindow
         {
             richText = true,
             wordWrap = true,
-            fontSize = 24 // Raddoppia la dimensione del carattere (default ~12)
+            fontSize = 18 // Raddoppia la dimensione del carattere (default ~12)
         };
 
         // Aggiungi il testo formattato
