@@ -30,17 +30,16 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         blockCollider = GetComponent<Collider>();
-        gameObject.layer = 8;
+        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+        gameObject.layer = 6;
+        ExcludeCollisions();
     }
 
-    private void Update()
-    {
-        CheckForExit();
-        UpdateLimitsWithRaycast();
-    }
     public void OnPointerDown(PointerEventData eventData)
     {
+        CheckForExit();
         SlideToExitIfAvailable();
+        UpdateLimitsWithRaycast();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -193,17 +192,30 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         {
             isSliding = true;
             rb.isKinematic = false;
-            rb.AddForce(Vector3.right * 50, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.right * 25, ForceMode.VelocityChange);
+            Physics.SyncTransforms();
         }
 
     }
 
     void GiveMoveInfo()
     {
-        if (positionsAfterDrag != positionBeforeDrag) { Debug.Log("Mossa usata"); }
+        if (positionsAfterDrag != positionBeforeDrag) { GameManager.OnMoveMade?.Invoke(); }
         else { Debug.Log("Mossa non usata"); }
     }
 
-    
+    void ExcludeCollisions()
+    {
+        int layerA = gameObject.layer; // Layer dell'oggetto corrente
+
+        for (int i = 0; i < 32; i++) // Unity supporta 32 layer
+        {
+            if (i != 7 && i != 8) // Ignora layer 7 e 8
+            {
+                Physics.IgnoreLayerCollision(layerA, i, true); // Disabilita le collisioni
+            }
+        }
+
+    }
 }
 

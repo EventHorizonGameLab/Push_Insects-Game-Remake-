@@ -4,7 +4,7 @@ using UnityEngine;
 public class CameraAligner : MonoBehaviour
 {
     public Camera targetCamera;
-    public float offset = 2f;
+    public float totalPadding = 2f;
     public float tiltAngle = 85f;
 
     public void AlignCameraToGrid(int rows, int columns, float cubeSize)
@@ -25,8 +25,8 @@ public class CameraAligner : MonoBehaviour
         float aspectRatio = targetCamera.aspect;
         float horizontalFOV = 2 * Mathf.Atan(Mathf.Tan(verticalFOV / 2) * aspectRatio);
 
-        float distanceForWidth = (gridWidth / 2f + offset) / Mathf.Tan(horizontalFOV / 2f);
-        float distanceForHeight = (gridHeight / 2f + offset) / Mathf.Tan(verticalFOV / 2f);
+        float distanceForWidth = (gridWidth / 2f + totalPadding) / Mathf.Tan(horizontalFOV / 2f);
+        float distanceForHeight = (gridHeight / 2f + totalPadding) / Mathf.Tan(verticalFOV / 2f);
 
         float cameraDistance = Mathf.Max(distanceForWidth, distanceForHeight);
 

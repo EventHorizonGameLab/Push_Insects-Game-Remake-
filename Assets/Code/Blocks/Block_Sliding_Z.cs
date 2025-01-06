@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
     [SerializeField] private float slideSpeed = 30f;
     [SerializeField] private float dragThreshold = 0.25f;
@@ -30,7 +30,7 @@ public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         blockCollider = GetComponent<Collider>();
     }
 
-    private void Update()
+    public void OnPointerDown(PointerEventData eventData)
     {
         UpdateLimitsWithRaycast();
     }
@@ -105,7 +105,7 @@ public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (Vector3.Distance(positionAfterSlide, positionBeforeSlide) > 0.01f)
         {
-            Debug.Log("Mossa usata");
+            GameManager.OnMoveMade?.Invoke();
         }
         else
         {
