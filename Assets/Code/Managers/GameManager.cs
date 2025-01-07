@@ -9,12 +9,15 @@ public class GameManager : MonoBehaviour
 
     public static Action OnMoveMade;
 
+    public static Action OnLevelCompleted;
+
     public static Action<bool> OnPlayerDragging;
 
 
     bool playerIsDragging;
 
     LevelData levelData;
+    string lastActiveScene;
 
     int currentMovesCount;
     int currentRecord;
@@ -35,12 +38,14 @@ public class GameManager : MonoBehaviour
         OnStartingGame += StartLevel;
         OnPlayerDragging += ChangePlayerState;
         OnMoveMade += UpdateLevelData;
+        OnLevelCompleted += GoToNextLevel;
     }
     private void OnDisable()
     {
         OnPlayerDragging -= ChangePlayerState;
         OnStartingGame -= StartLevel;
         OnMoveMade -= UpdateLevelData;
+        OnLevelCompleted -= GoToNextLevel;
     }
     public bool PlayerIsDragging() => playerIsDragging;
 
@@ -54,6 +59,7 @@ public class GameManager : MonoBehaviour
         levelData = FindAnyObjectByType<LevelData>();
         if(levelData == null) return;
         currentRecord = levelData.GetRecord("record");
+        lastActiveScene = levelData.gameObject.scene.name;
         UI_Manager.OnGivingGameUI(levelData);
     }
 
@@ -75,5 +81,10 @@ public class GameManager : MonoBehaviour
         currentMovesCount = 0;
         currentRecord = 0;
         // TODO: show score
+    }
+
+    void GoToNextLevel()
+    {
+        SceneTracker.OnLoadNextLevel(lastActiveScene);
     }
 }

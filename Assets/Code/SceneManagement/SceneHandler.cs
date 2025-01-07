@@ -7,7 +7,11 @@ public class SceneHandler : MonoBehaviour
 {
     public static Action OnSceneLoaded;
 
+    public static Action<string> OnSpecificLoad;
+
     [SerializeField] private GameObject loadingImage;
+
+    string currentScene = string.Empty;
 
     private void Awake()
     {
@@ -15,6 +19,14 @@ public class SceneHandler : MonoBehaviour
         {
             loadingImage.SetActive(false);
         }
+    }
+    private void OnEnable()
+    {
+        OnSpecificLoad += LoadLastPlayed;
+    }
+    private void OnDisable()
+    {
+        OnSpecificLoad -= LoadLastPlayed;
     }
 
     /// <summary>
@@ -25,7 +37,7 @@ public class SceneHandler : MonoBehaviour
     {
         if (string.IsNullOrEmpty(sceneName))
         {
-            Debug.LogError("Nome della scena non valido!");
+            Debug.LogError("Not valid scene name");
             return;
         }
 
@@ -49,6 +61,17 @@ public class SceneHandler : MonoBehaviour
             yield return null;
         }
 
+        if (currentScene != string.Empty)
+        {
+            AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(currentScene);
+            while (!asyncUnload.isDone)
+            {
+                yield return null;
+            }
+        }
+
+        currentScene = sceneName;
+
         if (loadingImage != null)
         {
             loadingImage.SetActive(false);
@@ -56,4 +79,10 @@ public class SceneHandler : MonoBehaviour
 
         GameManager.OnStartingGame();
     }
+
+    void LoadLastPlayed(string sceneName)
+    {
+        LoadSceneFromName(sceneName);
+    }
+
 }

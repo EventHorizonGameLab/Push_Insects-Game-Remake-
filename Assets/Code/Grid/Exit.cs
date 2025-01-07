@@ -7,7 +7,7 @@ public class Exit : MonoBehaviour
         Debug.Log("un oggetto e entrato");
         if (other.gameObject.CompareTag("Player"))
         {
-            //TODO: invoke endlevel event
+            GameManager.OnLevelCompleted?.Invoke();
             Debug.Log("USCITA RILEVATA");
         }
     }

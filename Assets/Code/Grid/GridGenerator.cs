@@ -138,6 +138,7 @@ public class GridGenerator : MonoBehaviour
 
         BoxCollider exitBoxCollider = exitCollider.AddComponent<BoxCollider>();
         exitBoxCollider.size = new Vector3(1f, wallHeight, cubeSize);
+        exitBoxCollider.isTrigger = true;
         exitCollider.transform.position = new Vector3(gridWidth, wallHeight / 2f, exitPositionZ - cubeSize);
         exitCollider.gameObject.AddComponent<Exit>();
 

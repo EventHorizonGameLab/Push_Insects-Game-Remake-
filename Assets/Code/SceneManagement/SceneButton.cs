@@ -22,7 +22,7 @@ public class SceneButton : MonoBehaviour
     {
         if (sceneHandler == null)
         {
-            Debug.LogError("SceneHandler non assegnato al pulsante!");
+            Debug.LogError("SceneHandler not assigned");
             return;
         }
 
