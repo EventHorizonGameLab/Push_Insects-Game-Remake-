@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 public class SceneHandler : MonoBehaviour
 {
     public static Action OnSceneLoaded;
-
     public static Action<string> OnSpecificLoad;
 
     [SerializeField] private GameObject loadingImage;
 
-    string currentScene = string.Empty;
+    private string currentScene = string.Empty;
+    private bool isLoading = false;
 
     private void Awake()
     {
@@ -20,19 +20,17 @@ public class SceneHandler : MonoBehaviour
             loadingImage.SetActive(false);
         }
     }
+
     private void OnEnable()
     {
         OnSpecificLoad += LoadLastPlayed;
     }
+
     private void OnDisable()
     {
         OnSpecificLoad -= LoadLastPlayed;
     }
 
-    /// <summary>
-    /// Funzione chiamabile da un bottone, accetta il nome della scena da caricare e la carica in modo additivo.
-    /// </summary>
-    /// <param name="sceneName">Il nome della scena da caricare.</param>
     public void LoadSceneFromName(string sceneName)
     {
         if (string.IsNullOrEmpty(sceneName))
@@ -41,15 +39,19 @@ public class SceneHandler : MonoBehaviour
             return;
         }
 
+        if (isLoading)
+        {
+            Debug.LogWarning("A scene is already loading");
+            return;
+        }
+
         StartCoroutine(LoadSceneCoroutine(sceneName));
     }
 
-    /// <summary>
-    /// Coroutine per caricare la scena e gestire l'immagine di caricamento.
-    /// </summary>
-    /// <param name="sceneName">Il nome della scena da caricare.</param>
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
+        isLoading = true;
+
         if (loadingImage != null)
         {
             loadingImage.SetActive(true);
@@ -61,7 +63,7 @@ public class SceneHandler : MonoBehaviour
             yield return null;
         }
 
-        if (currentScene != string.Empty)
+        if (!string.IsNullOrEmpty(currentScene) && SceneManager.GetSceneByName(currentScene).isLoaded)
         {
             AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(currentScene);
             while (!asyncUnload.isDone)
@@ -77,12 +79,14 @@ public class SceneHandler : MonoBehaviour
             loadingImage.SetActive(false);
         }
 
+        isLoading = false;
+
+        OnSceneLoaded?.Invoke();
         GameManager.OnStartingGame();
     }
 
-    void LoadLastPlayed(string sceneName)
+    private void LoadLastPlayed(string sceneName)
     {
         LoadSceneFromName(sceneName);
     }
-
 }
