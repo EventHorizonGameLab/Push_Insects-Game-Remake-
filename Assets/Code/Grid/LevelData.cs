@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LevelData : MonoBehaviour
 {
-    [SerializeField] int levelID;
+    public int levelID;
     public void SaveRecord(string key, int value)
     {
         string uniqueKey = GetUniqueKey(key);
