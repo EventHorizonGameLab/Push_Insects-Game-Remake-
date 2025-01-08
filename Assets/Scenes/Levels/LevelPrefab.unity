@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 405181399}
   - component: {fileID: 405181398}
   - component: {fileID: 405181397}
+  - component: {fileID: 405181403}
+  - component: {fileID: 405181402}
   m_Layer: 0
   m_Name: BlockPrefab
   m_TagString: Untagged
@@ -255,6 +257,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &405181402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405181396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1a759edde474ab4fbdc90dce82b5b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &405181403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405181396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3d64d08b088814aba3772065d3befc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TypeOfBlock: 0
 --- !u!1 &600946219
 GameObject:
   m_ObjectHideFlags: 0
