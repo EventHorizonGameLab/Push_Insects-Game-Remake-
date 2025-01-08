@@ -15,6 +15,7 @@ public class GridGenerator : MonoBehaviour
     public float scaleY = 1f;
     public int offsetZ = 0; // Offset Z per la griglia
     public bool singleCollider = false;
+    private bool is6x8; //ByEma
 
     public Material blackMaterial;
     public CameraAligner cameraAligner;
@@ -82,14 +83,17 @@ public class GridGenerator : MonoBehaviour
             case GridSize.Grid6x6:
                 rows = 6;
                 columns = 6;
+                is6x8 = false; //ByEma
                 break;
             case GridSize.Grid7x7:
                 rows = 7;
                 columns = 7;
+                is6x8 = false; //ByEma
                 break;
             case GridSize.Grid6x8:
-                rows = 6;
-                columns = 8;
+                rows = 8;
+                columns = 6;
+                is6x8 = true; //ByEma
                 break;
         }
     }
@@ -116,10 +120,10 @@ public class GridGenerator : MonoBehaviour
         float gridWidth = columns * cubeSize;
         float gridHeight = rows * cubeSize;
 
-        // La quarta unità dal basso corrisponde a row index = 3
-        int exitRow = 3;
+        // La quarta unitï¿½ dal basso corrisponde a row index = 3
+        int exitRow = is6x8 ? 5 : 3; //ModifiedByEma
 
-        // Posizione dell'uscita in unità spaziali
+        // Posizione dell'uscita in unitï¿½ spaziali
         float exitPositionZ = (exitRow + 1) * cubeSize + offsetZ;
 
         // Muro destro inferiore
