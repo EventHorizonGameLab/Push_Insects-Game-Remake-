@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public static Action OnLevelCompleted;
 
+    public static Action OnGoingNextLevel; //TODO: IMPLEMENTARE DOPO IMPLEMENTAZIONE SCORE
+
     public static Action<bool> OnPlayerDragging;
 
 
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour
         OnPlayerDragging += ChangePlayerState;
         OnMoveMade += UpdateLevelData;
         OnLevelCompleted += GoToNextLevel;
+        
     }
     private void OnDisable()
     {
@@ -46,6 +49,7 @@ public class GameManager : MonoBehaviour
         OnStartingGame -= StartLevel;
         OnMoveMade -= UpdateLevelData;
         OnLevelCompleted -= GoToNextLevel;
+        
     }
     public bool PlayerIsDragging() => playerIsDragging;
 
@@ -85,6 +89,7 @@ public class GameManager : MonoBehaviour
 
     void GoToNextLevel()
     {
+        EndLevel(); // DEBUG ONLY
         SceneTracker.OnLoadNextLevel(lastActiveScene);
     }
 }
