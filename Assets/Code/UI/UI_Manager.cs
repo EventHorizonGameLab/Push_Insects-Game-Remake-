@@ -18,6 +18,7 @@ public class UI_Manager : MonoBehaviour
     [Header("Texts")]
     [SerializeField] TMP_Text record_txt;
     [SerializeField] TMP_Text currentMoves_txt;
+    [SerializeField] TMP_Text levelID_txt;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class UI_Manager : MonoBehaviour
         optionPanel.SetActive(false);
         backButton.SetActive(false);
         record_txt.text = levelData.GetRecord("record").ToString();
+        levelID_txt.text = levelData.levelID.ToString();
         currentMoves_txt.text = "0"; 
     }
 
