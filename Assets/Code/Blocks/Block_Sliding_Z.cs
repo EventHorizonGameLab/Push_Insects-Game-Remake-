@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
+public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private float slideSpeed = 30f;
     [SerializeField] private float dragThreshold = 0.25f;
@@ -130,5 +130,10 @@ public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         Debug.DrawRay(centerOrigin, Vector3.forward * (maxZ - centerOrigin.z), Color.green);
         Debug.DrawRay(centerOrigin, Vector3.back * (centerOrigin.z - minZ), Color.red);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        GameManager.OnPlayerDragging?.Invoke(false);
     }
 }

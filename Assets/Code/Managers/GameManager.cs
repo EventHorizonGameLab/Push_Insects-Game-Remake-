@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     void ChangePlayerState(bool state)
     {
-        playerIsDragging = state;
+        playerIsDragging = state; 
     }
 
     void StartLevel()

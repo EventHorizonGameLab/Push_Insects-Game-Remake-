@@ -7,6 +7,7 @@ public class UI_Manager : MonoBehaviour
 {
     public static Action<int, int> OnUpdateMoves;
     public static Action<LevelData> OnGivingGameUI;
+    public static event Action OnRequestingMenu;
 
     [Header("Panels")]
     [SerializeField] GameObject mainMenuPanel;

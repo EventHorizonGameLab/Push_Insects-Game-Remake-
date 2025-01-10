@@ -8,8 +8,10 @@ public class KeyItem : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") && GameManager.instance.PlayerIsDragging() == false && !interacted)
         {
-            interacted = true;
             doorParent.OpenDoor();
+            Debug.Log("porta aperta");
+            interacted = true;
         }
+
     }
 }
