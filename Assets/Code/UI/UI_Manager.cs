@@ -29,15 +29,17 @@ public class UI_Manager : MonoBehaviour
     {
         OnGivingGameUI += InitGameUI;
         OnUpdateMoves += UpdateMoves;
+        OnRequestingMenu += InitMain;
     }
     private void OnDisable()
     {
         OnGivingGameUI -= InitGameUI;
         OnUpdateMoves -= UpdateMoves;
+        OnRequestingMenu -= InitMain;
     }
     private void Start()
     {
-        
+
     }
 
     void InitMain()
@@ -59,7 +61,7 @@ public class UI_Manager : MonoBehaviour
         backButton.SetActive(false);
         record_txt.text = levelData.GetRecord("record").ToString();
         levelID_txt.text = levelData.levelID.ToString();
-        currentMoves_txt.text = "0"; 
+        currentMoves_txt.text = "0";
     }
 
     void UpdateMoves(int moves, int record)
@@ -67,5 +69,10 @@ public class UI_Manager : MonoBehaviour
         currentMoves_txt.text = moves.ToString();
         record_txt.text = record.ToString();
     }
-    
-}  
+
+    public void RequestMainMenu() //for button
+    {
+        OnRequestingMenu();
+    }
+
+}

@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,7 +31,7 @@ public class GameManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this.gameObject);
         DontDestroyOnLoad(gameObject);
-        
+
         currentMovesCount = 0;
         Application.targetFrameRate = 60;
     }
@@ -40,8 +42,9 @@ public class GameManager : MonoBehaviour
         OnStartingGame += StartLevel;
         OnPlayerDragging += ChangePlayerState;
         OnMoveMade += UpdateLevelData;
-        OnLevelCompleted += GoToNextLevel;
-        
+        OnLevelCompleted += GoToNextLevel; //TODO: DEVE DINVETARE SHOWSCORE
+        UI_Manager.OnRequestingMenu += ReloadMainMenu;
+
     }
     private void OnDisable()
     {
@@ -49,19 +52,20 @@ public class GameManager : MonoBehaviour
         OnStartingGame -= StartLevel;
         OnMoveMade -= UpdateLevelData;
         OnLevelCompleted -= GoToNextLevel;
-        
+        UI_Manager.OnRequestingMenu -= ReloadMainMenu;
+
     }
     public bool PlayerIsDragging() => playerIsDragging;
 
     void ChangePlayerState(bool state)
     {
-        playerIsDragging = state; 
+        playerIsDragging = state;
     }
 
     void StartLevel()
     {
         levelData = FindAnyObjectByType<LevelData>();
-        if(levelData == null) return;
+        if (levelData == null) return;
         currentRecord = levelData.GetRecord("record");
         lastActiveScene = levelData.gameObject.scene.name;
         UI_Manager.OnGivingGameUI(levelData);
@@ -92,4 +96,30 @@ public class GameManager : MonoBehaviour
         EndLevel(); // DEBUG ONLY
         SceneTracker.OnLoadNextLevel(lastActiveScene);
     }
+
+    void ReloadMainMenu()
+    {
+        if (!string.IsNullOrEmpty(lastActiveScene) && SceneManager.GetSceneByName(lastActiveScene).isLoaded)
+        {
+            SceneHandler.OnUnloading?.Invoke(lastActiveScene);
+        }
+
+        EndLevel();
+        CameraHandler.OnMenuLoaded?.Invoke();
+
+        // Aspetta che la scena venga completamente scaricata prima di resettare
+        StartCoroutine(ResetSceneState());
+    }
+
+    private IEnumerator ResetSceneState()
+    {
+        while (SceneManager.GetSceneByName(lastActiveScene).isLoaded)
+        {
+            yield return null; // Aspetta che la scena venga completamente scaricata
+        }
+
+        lastActiveScene = null;
+        levelData = null;
+    }
+
 }
