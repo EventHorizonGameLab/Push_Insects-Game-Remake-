@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class SceneTracker : MonoBehaviour
@@ -8,18 +7,18 @@ public class SceneTracker : MonoBehaviour
     public static Action<string> OnLoadNextLevel;
 
     [SerializeField] SceneHandler sceneHandler;
-    List<string> sceneNames = new List<string>();
+    [SerializeField] List<string> sceneNames = new List<string>();
 
 
 #if UNITY_EDITOR
-    [SerializeField] List<SceneAsset> allScenes;
+    [SerializeField] List<UnityEditor.SceneAsset> allScenes;
 
     private void OnValidate()
     {
         if (allScenes != null)
         {
             sceneNames.Clear();
-            foreach (SceneAsset scene in allScenes)
+            foreach (var scene in allScenes)
             {
                 sceneNames.Add(scene.name);
             }
@@ -38,6 +37,7 @@ public class SceneTracker : MonoBehaviour
 
     void LoadNextLevel(string sceneName)
     {
+        Debug.Log($"loading scene{sceneName}");
         int currentIndex = sceneNames.IndexOf(sceneName);
         if (currentIndex + 1 < sceneNames.Count)
         {
