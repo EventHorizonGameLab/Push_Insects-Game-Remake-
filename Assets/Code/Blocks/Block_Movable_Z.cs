@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Movable_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
+public class Block_Movable_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler,IPointerUpHandler
 {
     private Rigidbody rb;
     private Collider blockCollider;
@@ -83,7 +83,7 @@ public class Block_Movable_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         rb.MovePosition(alignedPosition);
         positionsAfterDrag = alignedPosition;
         GiveMoveInfo();
-        GameManager.OnPlayerDragging(false);
+        
     }
 
     private void UpdateLimitsWithRaycast()
@@ -121,5 +121,10 @@ public class Block_Movable_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (positionsAfterDrag != positionBeforeDrag) { GameManager.OnMoveMade?.Invoke(); }
         else { Debug.Log("Mossa non usata"); }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        GameManager.OnPlayerDragging?.Invoke(false);
     }
 }

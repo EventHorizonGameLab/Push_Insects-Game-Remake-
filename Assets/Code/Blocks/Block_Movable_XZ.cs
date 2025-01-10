@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IBlock, IPointerDownHandler
+public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IBlock, IPointerDownHandler, IPointerUpHandler
 {
     private Rigidbody rb;
     private Collider blockCollider;
@@ -32,7 +32,7 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         blockCollider = GetComponent<Collider>();
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         gameObject.layer = 6;
-        ExcludeCollisions();
+        //ExcludeCollisions();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -131,7 +131,7 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         positionsAfterDrag = alignedPosition;
 
         GiveMoveInfo();
-        GameManager.OnPlayerDragging(false);
+     
     }
 
     private void UpdateLimitsWithRaycast()
@@ -216,6 +216,11 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             }
         }
 
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        GameManager.OnPlayerDragging?.Invoke(false);
     }
 }
 

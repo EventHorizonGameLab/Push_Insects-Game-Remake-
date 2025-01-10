@@ -15,6 +15,6 @@ public class Block_Door : MonoBehaviour
     public void OpenDoor()
     {
         keyChild.SetActive(false);
-        transform.DOMove(rb.position+Vector3.up * 10, 2);
+        gameObject.SetActive(false);
     }
 }
