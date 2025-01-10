@@ -8,10 +8,11 @@ public class SceneTracker : MonoBehaviour
     public static Action<string> OnLoadNextLevel;
 
     [SerializeField] SceneHandler sceneHandler;
+    List<string> sceneNames = new List<string>();
+
 
 #if UNITY_EDITOR
     [SerializeField] List<SceneAsset> allScenes;
-    List<string> sceneNames = new List<string>();
 
     private void OnValidate()
     {
