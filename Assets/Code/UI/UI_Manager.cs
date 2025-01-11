@@ -1,7 +1,8 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEngine.UI;
 using UnityEngine;
+
 
 public class UI_Manager : MonoBehaviour
 {
@@ -20,6 +21,14 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text record_txt;
     [SerializeField] TMP_Text currentMoves_txt;
     [SerializeField] TMP_Text levelID_txt;
+    [Header("Sprites")]
+    [SerializeField] Sprite beginner_sprite;
+    [SerializeField] Sprite intermediate_sprite;
+    [SerializeField] Sprite advanced_sprite;
+    [Header("Image Field")]
+    [SerializeField] Image difficulty_img;
+
+
 
     private void Awake()
     {
@@ -62,6 +71,7 @@ public class UI_Manager : MonoBehaviour
         record_txt.text = levelData.GetRecord("record").ToString();
         levelID_txt.text = levelData.levelID.ToString();
         currentMoves_txt.text = "0";
+        difficulty_img.sprite = GetDifficultyImage(levelData.difficulty);
     }
 
     void UpdateMoves(int moves, int record)
@@ -73,6 +83,17 @@ public class UI_Manager : MonoBehaviour
     public void RequestMainMenu() //for button
     {
         OnRequestingMenu();
+    }
+
+    Sprite GetDifficultyImage(Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Difficulty.BEGINNER: return beginner_sprite;
+            case Difficulty.INTERMEDIATE: return intermediate_sprite;
+            case Difficulty.ADVANCED: return advanced_sprite;
+            default: return null;
+        }
     }
 
 }
