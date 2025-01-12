@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
 
         EndLevel();
         CameraHandler.OnMenuLoaded?.Invoke();
+        UI_Manager.OnUpdateMoves?.Invoke(0, currentRecord); // impedisce il salvataggio se si esce dal livello
 
         // Aspetta che la scena venga completamente scaricata prima di resettare
         StartCoroutine(ResetSceneState());

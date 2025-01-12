@@ -2,15 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
+[RequireComponent(typeof(SceneHandler))]
 public class SceneButton : MonoBehaviour
 {
-    [SerializeField] private SceneHandler sceneHandler;
+    private SceneHandler sceneHandler;
     [SerializeField] private string sceneName;
 
 #if UNITY_EDITOR
     [SerializeField] private UnityEditor.SceneAsset sceneAsset;
     private void OnValidate()
     {
+        sceneHandler = GetComponent<SceneHandler>();
+
         if (sceneAsset != null)
         {
             sceneName = sceneAsset.name;

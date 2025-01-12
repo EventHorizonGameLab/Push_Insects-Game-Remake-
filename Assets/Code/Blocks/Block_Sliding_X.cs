@@ -81,7 +81,14 @@ public class Block_Sliding_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         isSliding = true;
         float targetX = direction > 0 ? maxX : minX;
+        maxX = RoundToNearestHalf(maxX);
+        minX = RoundToNearestHalf(minX);
         StartCoroutine(SlideToTarget(new Vector3(targetX, transform.position.y, transform.position.z)));
+    }
+
+    private float RoundToNearestHalf(float value)
+    {
+        return Mathf.Round(value * 2f) / 2f;
     }
 
     private IEnumerator SlideToTarget(Vector3 targetPosition)

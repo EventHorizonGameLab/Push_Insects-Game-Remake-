@@ -77,16 +77,23 @@ public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private void Slide(float direction)
     {
         isSliding = true;
+        maxZ = RoundToNearestHalf(maxZ);
+        minZ = RoundToNearestHalf(minZ);
         float targetZ = direction > 0 ? maxZ : minZ;
         StartCoroutine(SlideToTarget(new Vector3(transform.position.x, transform.position.y, targetZ)));
+    }
+
+    private float RoundToNearestHalf(float value)
+    {
+        return Mathf.Round(value * 2f) / 2f;
     }
 
     private System.Collections.IEnumerator SlideToTarget(Vector3 targetPosition)
     {
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, slideSpeed * Time.deltaTime);
-            yield return null;
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, slideSpeed * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
         }
         transform.position = targetPosition;
         positionAfterSlide = transform.position;

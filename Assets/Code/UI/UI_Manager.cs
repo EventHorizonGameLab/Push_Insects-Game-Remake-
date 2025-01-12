@@ -2,6 +2,8 @@ using System;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections.Generic;
+using DG.Tweening;
 
 
 public class UI_Manager : MonoBehaviour
@@ -11,12 +13,13 @@ public class UI_Manager : MonoBehaviour
     public static event Action OnRequestingMenu;
 
     [Header("Panels")]
-    [SerializeField] GameObject mainMenuPanel;
-    [SerializeField] GameObject levelMenuPanel;
+    [SerializeField] RectTransform mainMenuPanel;
+    [SerializeField] List<RectTransform> allScreens;
     [SerializeField] GameObject optionPanel;
     [SerializeField] GameObject inGameView;
     [Header("Buttons")]
-    [SerializeField] GameObject backButton;
+    [SerializeField] List<GameObject> mainButtons;
+    [SerializeField] List<GameObject> difficultyButtons;
     [Header("Texts")]
     [SerializeField] TMP_Text record_txt;
     [SerializeField] TMP_Text currentMoves_txt;
@@ -27,6 +30,9 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] Sprite advanced_sprite;
     [Header("Image Field")]
     [SerializeField] Image difficulty_img;
+
+    //---\\
+    Vector3 mainScreenPos;
 
 
 
@@ -53,8 +59,8 @@ public class UI_Manager : MonoBehaviour
 
     void InitMain()
     {
-        mainMenuPanel.SetActive(true);
-        levelMenuPanel.SetActive(false);
+        mainScreenPos = mainMenuPanel.anchoredPosition;
+        mainMenuPanel.gameObject.SetActive(true);
         inGameView.SetActive(false);
         optionPanel.SetActive(false);
         record_txt.text = string.Empty;
@@ -63,11 +69,11 @@ public class UI_Manager : MonoBehaviour
 
     void InitGameUI(LevelData levelData)
     {
-        mainMenuPanel.SetActive(false);
-        levelMenuPanel.SetActive(false);
+        mainMenuPanel.gameObject.SetActive(false);
+
         inGameView.SetActive(true); // activate UI game only
         optionPanel.SetActive(false);
-        backButton.SetActive(false);
+        
         record_txt.text = levelData.GetRecord("record").ToString();
         levelID_txt.text = levelData.levelID.ToString();
         currentMoves_txt.text = "0";
@@ -95,5 +101,40 @@ public class UI_Manager : MonoBehaviour
             default: return null;
         }
     }
+
+    public void HandleActivaionList(List<GameObject> activaionList, bool value)
+    {
+        foreach (GameObject obj in activaionList) obj.SetActive(value);
+    }
+
+    //-- Buttons Calls --\\
+
+    #region ButtonsCalls
+
+    public void GoToEasyLevelsScreen()
+    {
+        foreach(RectTransform screen in allScreens )
+        {
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920, 0.5f);
+        }
+    }
+
+    public void GoToIntermediateLevelsScreen()
+    {
+        foreach (RectTransform screen in allScreens)
+        {
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 0.5f);
+        }
+    }
+
+    public void GoToAdvancedLevelsScreen()
+    {
+        foreach (RectTransform screen in allScreens)
+        {
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 3, 0.5f);
+        }
+    }
+
+    #endregion
 
 }
