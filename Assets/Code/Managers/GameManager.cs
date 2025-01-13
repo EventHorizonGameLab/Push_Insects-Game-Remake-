@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
 
     public static Action OnMoveMade;
 
+    public static Action<IBlock, Vector3> OnMoveToRegister;
+
+    public static Action OnMoveUndone;
+
     public static Action OnLevelCompleted;
 
     public static Action OnGoingNextLevel; //TODO: IMPLEMENTARE DOPO IMPLEMENTAZIONE SCORE
@@ -42,6 +46,7 @@ public class GameManager : MonoBehaviour
         OnStartingGame += StartLevel;
         OnPlayerDragging += ChangePlayerState;
         OnMoveMade += UpdateLevelData;
+        OnMoveUndone += UpdateLevelDataOnUndo;
         OnLevelCompleted += GoToNextLevel; //TODO: DEVE DINVETARE SHOWSCORE
         UI_Manager.OnRequestingMenu += ReloadMainMenu;
 
@@ -51,6 +56,7 @@ public class GameManager : MonoBehaviour
         OnPlayerDragging -= ChangePlayerState;
         OnStartingGame -= StartLevel;
         OnMoveMade -= UpdateLevelData;
+        OnMoveUndone -= UpdateLevelDataOnUndo;
         OnLevelCompleted -= GoToNextLevel;
         UI_Manager.OnRequestingMenu -= ReloadMainMenu;
 
@@ -74,17 +80,30 @@ public class GameManager : MonoBehaviour
     void UpdateLevelData()
     {
         currentMovesCount++;
+
         if (currentMovesCount > currentRecord)
         {
             currentRecord = currentMovesCount;
-            levelData.SaveRecord("record", currentRecord);
         }
 
         UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
     }
 
+    void UpdateLevelDataOnUndo()
+    {
+        currentMovesCount--;
+
+        int savedRecord = levelData.GetRecord("record");
+        currentRecord = Mathf.Max(savedRecord, currentMovesCount);
+
+        UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
+    }
+   
+
+
     void EndLevel()
     {
+        levelData.SaveRecord("record", currentRecord);
         levelData = null;
         currentMovesCount = 0;
         currentRecord = 0;

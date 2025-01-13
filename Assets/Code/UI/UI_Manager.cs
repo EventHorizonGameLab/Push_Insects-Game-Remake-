@@ -30,6 +30,9 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] Sprite advanced_sprite;
     [Header("Image Field")]
     [SerializeField] Image difficulty_img;
+    [Header("Endgame")]
+    [SerializeField] RectTransform winScreen;
+    [SerializeField] List<RectTransform> seeds;
 
     //---\\
     Vector3 mainScreenPos;
@@ -69,21 +72,22 @@ public class UI_Manager : MonoBehaviour
 
     void InitGameUI(LevelData levelData)
     {
-        mainMenuPanel.gameObject.SetActive(false);
+       
 
+        DeactivateMenus();
         inGameView.SetActive(true); // activate UI game only
-        optionPanel.SetActive(false);
-        
         record_txt.text = levelData.GetRecord("record").ToString();
         levelID_txt.text = levelData.levelID.ToString();
         currentMoves_txt.text = "0";
         difficulty_img.sprite = GetDifficultyImage(levelData.difficulty);
+        
+        //TODO: GET PREDATOR IMAGE
     }
 
     void UpdateMoves(int moves, int record)
     {
         currentMoves_txt.text = moves.ToString();
-        record_txt.text = record.ToString();
+        record_txt.text = record != 0 ? record.ToString() : record_txt.text;
     }
 
     public void RequestMainMenu() //for button
@@ -105,6 +109,13 @@ public class UI_Manager : MonoBehaviour
     public void HandleActivaionList(List<GameObject> activaionList, bool value)
     {
         foreach (GameObject obj in activaionList) obj.SetActive(value);
+    }
+
+    void DeactivateMenus()
+    {
+        mainMenuPanel.gameObject.SetActive(false);
+        optionPanel.gameObject.SetActive(false);
+        foreach(RectTransform r in allScreens) r.gameObject.SetActive(false);
     }
 
     //-- Buttons Calls --\\

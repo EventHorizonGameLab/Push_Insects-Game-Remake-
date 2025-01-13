@@ -200,7 +200,11 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     void GiveMoveInfo()
     {
-        if (positionsAfterDrag != positionBeforeDrag) { GameManager.OnMoveMade?.Invoke(); }
+        if (positionsAfterDrag != positionBeforeDrag)
+        {
+            GameManager.OnMoveMade?.Invoke();
+            GameManager.OnMoveToRegister?.Invoke(this,positionBeforeDrag);
+        }
         else { Debug.Log("Mossa non usata"); }
     }
 
@@ -222,5 +226,13 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         GameManager.OnPlayerDragging?.Invoke(false);
     }
+
+
+    public void RestorePositionTo(Vector3 position)
+    {
+        rb.MovePosition(position);
+        GameManager.OnMoveUndone?.Invoke();
+    }
+
 }
 

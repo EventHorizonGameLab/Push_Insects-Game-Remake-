@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
+public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler, IBlock
 {
     [SerializeField] private float slideSpeed = 30f;
     [SerializeField] private float dragThreshold = 0.25f;
@@ -97,7 +97,7 @@ public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
         transform.position = targetPosition;
         positionAfterSlide = transform.position;
-        CheckMoveUsed();
+        GiveMoveInfo();
         isSliding = false;
     }
 
@@ -105,14 +105,15 @@ public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         transform.position = positionBeforeSlide;
         positionAfterSlide = positionBeforeSlide; // Aggiorna la posizione finale per la verifica
-        CheckMoveUsed();
+        GiveMoveInfo();
     }
 
-    private void CheckMoveUsed()
+    private void GiveMoveInfo()
     {
         if (Vector3.Distance(positionAfterSlide, positionBeforeSlide) > 0.01f)
         {
             GameManager.OnMoveMade?.Invoke();
+            GameManager.OnMoveToRegister?.Invoke(this, positionBeforeSlide);
         }
         else
         {
@@ -142,5 +143,11 @@ public class Block_Sliding_Z : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnPointerUp(PointerEventData eventData)
     {
         GameManager.OnPlayerDragging?.Invoke(false);
+    }
+
+    public void RestorePositionTo(Vector3 position)
+    {
+        rb.MovePosition(position);
+        GameManager.OnMoveUndone?.Invoke();
     }
 }

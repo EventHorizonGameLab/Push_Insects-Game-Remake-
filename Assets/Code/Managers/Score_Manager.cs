@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Score_Manager : MonoBehaviour
 {
-
+    [SerializeField] List<GameObject> seeds;
     Score CalculateScore(LevelData levelData, int movesMade) // min 1, max 3
     {
         if (movesMade <= levelData.movesForMaxScore) return Score.MAX;

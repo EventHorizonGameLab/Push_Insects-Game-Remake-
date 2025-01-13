@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
+public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler,IBlock
 {
     private Rigidbody rb;
     private Collider blockCollider;
@@ -120,12 +120,23 @@ public class Block_Movable_X : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     void GiveMoveInfo()
     {
-        if (positionsAfterDrag != positionBeforeDrag) { GameManager.OnMoveMade?.Invoke(); }
+        if (positionsAfterDrag != positionBeforeDrag)
+        {
+            GameManager.OnMoveMade?.Invoke();
+            GameManager.OnMoveToRegister?.Invoke(this, positionBeforeDrag);
+        }
         else { Debug.Log("Mossa non usata"); }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         GameManager.OnPlayerDragging?.Invoke(false);
+    }
+
+
+    public void RestorePositionTo(Vector3 position)
+    {
+        rb.MovePosition(position);
+        GameManager.OnMoveUndone?.Invoke();
     }
 }
