@@ -9,8 +9,6 @@ public class Block_Door : MonoBehaviour
         Blue,
         Green
     }
-    [Header("Door Animation Settings")]
-    public DoorAnimation selectedAnimation;
     private Animator animator;
     Rigidbody rb;
     GameObject keyChild;
@@ -24,7 +22,8 @@ public class Block_Door : MonoBehaviour
     public void OpenDoor()
     {
         keyChild.SetActive(false);
-        switch (selectedAnimation)
+        DoorAnimation randomAnimation = (DoorAnimation)Random.Range(0, 3);
+        switch (randomAnimation)
         {
             case DoorAnimation.Black:
                 animator.SetTrigger("Black");

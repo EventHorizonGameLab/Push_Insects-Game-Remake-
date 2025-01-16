@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1469635814891731975}
   - component: {fileID: 118850021792898527}
   - component: {fileID: 3446490264373445979}
+  - component: {fileID: 8338797333912353515}
   m_Layer: 0
   m_Name: Standard_1x2_V
   m_TagString: Untagged
@@ -172,6 +173,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 596dfedc5884b7144817fd3289d5ce17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8338797333912353515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101783901343935461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72fc5a7fedf2474897a7c18564ae725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1100994949663461632
@@ -372,7 +385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8277712457366893864, guid: 491c20430f5bc69479e06d2a0bd0239e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

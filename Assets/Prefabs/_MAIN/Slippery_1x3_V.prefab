@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1172172273724778704}
   - component: {fileID: 4837191891644714934}
   - component: {fileID: 2933777493758347576}
+  - component: {fileID: 2074350843070076297}
   m_Layer: 0
   m_Name: Slippery_1x3_V
   m_TagString: Untagged
@@ -169,6 +170,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slideSpeed: 30
   dragThreshold: 0.25
+--- !u!114 &2074350843070076297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7352013564042593873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72fc5a7fedf2474897a7c18564ae725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3508728508127867366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -331,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5111787342704508848, guid: fec8c9ccef65b9d4da4ae8a61286a6ac, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6647212781108573158, guid: fec8c9ccef65b9d4da4ae8a61286a6ac, type: 3}
       propertyPath: m_LocalScale.x

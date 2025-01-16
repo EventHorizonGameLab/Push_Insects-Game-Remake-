@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 120322520521916805}
   - component: {fileID: 4526196074482327648}
   - component: {fileID: 720000109511028891}
+  - component: {fileID: 2415388154047174219}
   m_Layer: 0
   m_Name: Fixed_1x2_H
   m_TagString: Untagged
@@ -166,6 +167,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73bdc20dc87e57b4ebe76fd97e3e5461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2415388154047174219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8243027001693950704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72fc5a7fedf2474897a7c18564ae725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &912429295247190253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221,6 +234,10 @@ PrefabInstance:
     - target: {fileID: 4522001145932538193, guid: 46cd463f84a4ae54da35551365efbba6, type: 3}
       propertyPath: m_Name
       value: StoneWorm_Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522001145932538193, guid: 46cd463f84a4ae54da35551365efbba6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
