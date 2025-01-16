@@ -10,7 +10,7 @@ public class Block_Door : MonoBehaviour
         Green
     }
     [Header("Door Animation Settings")]
-    public DoorAnimation selectedAnimation; // Campo visibile dall'Inspector
+    public DoorAnimation selectedAnimation;
     private Animator animator;
     Rigidbody rb;
     GameObject keyChild;
