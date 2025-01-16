@@ -17,9 +17,11 @@ public class GameManager : MonoBehaviour
 
     public static Action OnLevelCompleted;
 
-    public static Action OnGoingNextLevel; //TODO: IMPLEMENTARE DOPO IMPLEMENTAZIONE SCORE
+    public static Action OnGoingNextLevel;
 
     public static Action<bool> OnPlayerDragging;
+
+    [SerializeField] Score_Manager scoreManager;
 
 
     bool playerIsDragging;
@@ -47,8 +49,9 @@ public class GameManager : MonoBehaviour
         OnPlayerDragging += ChangePlayerState;
         OnMoveMade += UpdateLevelData;
         OnMoveUndone += UpdateLevelDataOnUndo;
-        OnLevelCompleted += GoToNextLevel; //TODO: DEVE DINVETARE SHOWSCORE
+        OnLevelCompleted += EndLevel;
         UI_Manager.OnRequestingMenu += ReloadMainMenu;
+        UI_Manager.OnRequestingNextLevel += GoToNextLevel;
 
     }
     private void OnDisable()
@@ -57,9 +60,9 @@ public class GameManager : MonoBehaviour
         OnStartingGame -= StartLevel;
         OnMoveMade -= UpdateLevelData;
         OnMoveUndone -= UpdateLevelDataOnUndo;
-        OnLevelCompleted -= GoToNextLevel;
+        OnLevelCompleted -= EndLevel;
         UI_Manager.OnRequestingMenu -= ReloadMainMenu;
-
+        UI_Manager.OnRequestingNextLevel -= GoToNextLevel;
     }
     public bool PlayerIsDragging() => playerIsDragging;
 
@@ -103,16 +106,16 @@ public class GameManager : MonoBehaviour
 
     void EndLevel()
     {
-        levelData.SaveRecord("record", currentRecord);
-        levelData = null;
-        currentMovesCount = 0;
-        currentRecord = 0;
-        // TODO: show score
+        Score finalScore = scoreManager.CalculateScore(levelData,currentMovesCount);
+        UI_Manager.OnWinScreen?.Invoke(finalScore, currentMovesCount);
     }
 
     void GoToNextLevel()
     {
-        EndLevel(); // DEBUG ONLY
+        levelData.SaveRecord("record", currentRecord);
+        levelData = null;
+        currentMovesCount = 0;
+        currentRecord = 0;
         SceneTracker.OnLoadNextLevel(lastActiveScene);
     }
 
@@ -123,7 +126,9 @@ public class GameManager : MonoBehaviour
             SceneHandler.OnUnloading?.Invoke(lastActiveScene);
         }
 
-        EndLevel();
+        levelData = null;
+        currentMovesCount = 0;
+        currentRecord = 0;
         CameraHandler.OnMenuLoaded?.Invoke();
         UI_Manager.OnUpdateMoves?.Invoke(0, currentRecord); // impedisce il salvataggio se si esce dal livello
 

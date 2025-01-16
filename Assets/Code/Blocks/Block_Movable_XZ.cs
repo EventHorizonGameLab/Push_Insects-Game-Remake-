@@ -190,6 +190,7 @@ public class Block_Movable_XZ : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         if (exitAvailable)
         {
+            GameManager.OnMoveMade?.Invoke();
             isSliding = true;
             rb.isKinematic = false;
             rb.AddForce(Vector3.right * 25, ForceMode.VelocityChange);

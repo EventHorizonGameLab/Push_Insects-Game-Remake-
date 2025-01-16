@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Score_Manager : MonoBehaviour
 {
-    [SerializeField] List<GameObject> seeds;
-    Score CalculateScore(LevelData levelData, int movesMade) // min 1, max 3
+    
+    public Score CalculateScore(LevelData levelData, int movesMade) 
     {
         if (movesMade <= levelData.movesForMaxScore) return Score.MAX;
         if (movesMade <= levelData.movesForMidScore) return Score.MID;
@@ -14,7 +14,7 @@ public class Score_Manager : MonoBehaviour
 
 public enum Score
 {
-    MAX = 1,
-    MID = 2,
-    MIN = 3
+    MAX,
+    MID,
+    MIN
 }
