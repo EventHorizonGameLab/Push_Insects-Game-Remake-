@@ -13,25 +13,23 @@ public class UI_Manager : MonoBehaviour
     public static Action<Score, int> OnWinScreen;
     public static event Action OnRequestingMenu;
     public static event Action OnRequestingNextLevel;
+    public static event Action OnRequestingLastScene;
 
     [Header("Panels")]
     [SerializeField] RectTransform mainMenuPanel;
     [SerializeField] List<RectTransform> allScreens;
     [SerializeField] GameObject optionPanel;
     [SerializeField] GameObject inGameView;
-    [Header("Buttons")]
-    [SerializeField] List<GameObject> mainButtons;
-    [SerializeField] List<GameObject> difficultyButtons;
     [Header("Texts")]
     [SerializeField] TMP_Text record_txt;
     [SerializeField] TMP_Text currentMoves_txt;
     [SerializeField] TMP_Text levelID_txt;
     [Header("Sprites")]
-    [SerializeField] Sprite beginner_sprite;
-    [SerializeField] Sprite intermediate_sprite;
-    [SerializeField] Sprite advanced_sprite;
+    [SerializeField] List<Sprite> difficulty_sprites;
+    [SerializeField] List<Sprite> Predator_sprites;
     [Header("Image Field")]
     [SerializeField] Image difficulty_img;
+    [SerializeField] Image predator_img;
     [Header("Endgame")]
     [SerializeField] RectTransform winScreen;
     [SerializeField] List<RectTransform> seeds;
@@ -84,7 +82,7 @@ public class UI_Manager : MonoBehaviour
         currentMoves_txt.text = "0";
         HandleActivationList(seeds, false);
         difficulty_img.sprite = GetDifficultyImage(levelData.difficulty);
-        //TODO: GET PREDATOR IMAGE
+        predator_img.sprite = GetPredatorImage(levelData.difficulty);
     }
 
 
@@ -111,14 +109,26 @@ public class UI_Manager : MonoBehaviour
     {
         switch (difficulty)
         {
-            case Difficulty.BEGINNER: return beginner_sprite;
-            case Difficulty.INTERMEDIATE: return intermediate_sprite;
-            case Difficulty.ADVANCED: return advanced_sprite;
+            case Difficulty.BEGINNER: return difficulty_sprites[0];
+            case Difficulty.INTERMEDIATE: return difficulty_sprites[1];
+            case Difficulty.ADVANCED: return difficulty_sprites[2];
             default: return null;
         }
     }
 
-    public void HandleActivationList(List<GameObject> activaionList, bool value)
+    Sprite GetPredatorImage(Difficulty difficulty)
+    {
+        if (Predator_sprites.Count < 0) return null;
+        switch (difficulty)
+        {
+            case Difficulty.BEGINNER: return Predator_sprites[0];
+            case Difficulty.INTERMEDIATE: return Predator_sprites[1];
+            case Difficulty.ADVANCED: return Predator_sprites[2];
+            default: return null;
+        }
+    }
+
+    public void HandleActivationList(List<GameObject> activaionList, bool value) // available for buttons
     {
         foreach (GameObject obj in activaionList) obj.SetActive(value);
     }
@@ -131,14 +141,14 @@ public class UI_Manager : MonoBehaviour
     {
         for (int i = 0; i < allScreens.Count; i++)
         {
-            initialScreenPos.Add( allScreens[i].anchoredPosition);
+            initialScreenPos.Add(allScreens[i].anchoredPosition);
             Debug.Log(allScreens[i].anchoredPosition);
         }
     }
 
     void RestoreScreenPositions()
     {
-        for(int i = 0;i < allScreens.Count;i++)
+        for (int i = 0; i < allScreens.Count; i++)
         {
             allScreens[i].anchoredPosition = initialScreenPos[i];
             allScreens[i].gameObject.SetActive(true);
@@ -172,11 +182,16 @@ public class UI_Manager : MonoBehaviour
         OnRequestingNextLevel();
     }
 
+    public void RequestLastScene()
+    {
+        OnRequestingLastScene();
+    }
+
     public void GoToEasyLevelsScreen()
     {
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920, 0.5f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920, 0.6f);
         }
     }
 
@@ -184,7 +199,7 @@ public class UI_Manager : MonoBehaviour
     {
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 0.5f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 0.6f);
         }
     }
 
@@ -192,7 +207,15 @@ public class UI_Manager : MonoBehaviour
     {
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 3, 0.5f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 3, 0.6f);
+        }
+    }
+
+    public void GoToSkinScreen()
+    {
+        foreach (RectTransform screen in allScreens)
+        {
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * -1920, 0.6f);
         }
     }
 
@@ -200,7 +223,7 @@ public class UI_Manager : MonoBehaviour
     {
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * tweenValue, 0.6f).SetEase(Ease.Linear);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * tweenValue, 0.6f);
         }
     }
 

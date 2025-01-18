@@ -164,6 +164,7 @@ public class SceneHandler : MonoBehaviour
 
     private void LoadLastPlayed(string sceneName)
     {
+        
         LoadSceneFromName(sceneName);
     }
 }

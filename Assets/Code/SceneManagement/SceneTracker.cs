@@ -5,6 +5,7 @@ using UnityEngine;
 public class SceneTracker : MonoBehaviour
 {
     public static Action<string> OnLoadNextLevel;
+    public static Action<string> OnLoadTrackedLevel;
 
     [SerializeField] SceneHandler sceneHandler;
     [SerializeField] List<string> sceneNames = new List<string>();
@@ -29,10 +30,12 @@ public class SceneTracker : MonoBehaviour
     private void OnEnable()
     {
         OnLoadNextLevel += LoadNextLevel;
+        OnLoadTrackedLevel += LoadLastPlayed;
     }
     private void OnDisable()
     {
         OnLoadNextLevel -= LoadNextLevel;
+        OnLoadTrackedLevel -= LoadLastPlayed;
     }
 
     void LoadNextLevel(string sceneName)
@@ -49,9 +52,22 @@ public class SceneTracker : MonoBehaviour
             Debug.Log("No scene available");
             return;
         }
+    }
 
+    private void LoadLastPlayed(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            sceneHandler.LoadSceneFromName(sceneNames[0]);
+        }
+        else
+        {
+            sceneHandler.LoadSceneFromName(sceneName);
+        }
         
     }
+
+
 
 
 }

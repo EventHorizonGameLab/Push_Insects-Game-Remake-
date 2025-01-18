@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         OnLevelCompleted += EndLevel;
         UI_Manager.OnRequestingMenu += ReloadMainMenu;
         UI_Manager.OnRequestingNextLevel += GoToNextLevel;
+        UI_Manager.OnRequestingLastScene += LoadSceneByStart;
 
     }
     private void OnDisable()
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
         OnLevelCompleted -= EndLevel;
         UI_Manager.OnRequestingMenu -= ReloadMainMenu;
         UI_Manager.OnRequestingNextLevel -= GoToNextLevel;
+        UI_Manager.OnRequestingLastScene -= LoadSceneByStart;
     }
     public bool PlayerIsDragging() => playerIsDragging;
 
@@ -77,6 +79,7 @@ public class GameManager : MonoBehaviour
         if (levelData == null) return;
         currentRecord = levelData.GetRecord("record");
         lastActiveScene = levelData.gameObject.scene.name;
+        SaveLastScene(lastActiveScene);
         UI_Manager.OnGivingGameUI(levelData);
     }
 
@@ -101,12 +104,12 @@ public class GameManager : MonoBehaviour
 
         UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
     }
-   
+
 
 
     void EndLevel()
     {
-        Score finalScore = scoreManager.CalculateScore(levelData,currentMovesCount);
+        Score finalScore = scoreManager.CalculateScore(levelData, currentMovesCount);
         UI_Manager.OnWinScreen?.Invoke(finalScore, currentMovesCount);
     }
 
@@ -147,4 +150,19 @@ public class GameManager : MonoBehaviour
         levelData = null;
     }
 
+    void SaveLastScene(string sceneName)
+    {
+        PlayerPrefs.SetString("LastScene", sceneName);
+        PlayerPrefs.Save();
+    }
+
+    string GetLastScene()
+    {
+        return PlayerPrefs.GetString("LastScene");
+    }
+
+    void LoadSceneByStart()
+    {
+        SceneTracker.OnLoadTrackedLevel?.Invoke(GetLastScene());
+    }
 }
