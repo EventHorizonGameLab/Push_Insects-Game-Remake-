@@ -16,11 +16,13 @@ public class SkinManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        SelectedSkinIndex = defaultSkinIndex;
+        SelectedSkinIndex = PlayerPrefs.GetInt("SelectedSkinIndex", defaultSkinIndex);
     }
 
     public void SetSkinIndex(int index)
     {
         SelectedSkinIndex = index;
+        PlayerPrefs.SetInt("SelectedSkinIndex", index);
+        PlayerPrefs.Save();
     }
 }

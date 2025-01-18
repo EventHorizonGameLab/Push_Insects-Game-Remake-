@@ -2371,6 +2371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a130c5fbd0e5f243a64cfe378747cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreManager: {fileID: 0}
 --- !u!1 &470213493
 GameObject:
   m_ObjectHideFlags: 0
@@ -3387,6 +3388,7 @@ GameObject:
   - component: {fileID: 711678278}
   - component: {fileID: 711678277}
   - component: {fileID: 711678280}
+  - component: {fileID: 711678281}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -3508,9 +3510,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1510f4ceb539a5740ad13545eb549def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneHandler: {fileID: 1726265766}
   sceneName: Marco_TestScene
   sceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+--- !u!114 &711678281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711678275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941780cded254e04994e94917feaffc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadingImage: {fileID: 0}
 --- !u!1 &727103316
 GameObject:
   m_ObjectHideFlags: 0
@@ -7678,6 +7692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a130c5fbd0e5f243a64cfe378747cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreManager: {fileID: 0}
 --- !u!4 &1602443674
 Transform:
   m_ObjectHideFlags: 0
@@ -8774,13 +8789,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuPanel: {fileID: 281988503}
-  levelMenuPanel: {fileID: 1414332755}
+  allScreens: []
   optionPanel: {fileID: 204045925}
   inGameView: {fileID: 849118278}
-  backButton: {fileID: 1693382066}
   record_txt: {fileID: 1658489906}
   currentMoves_txt: {fileID: 969280651}
   levelID_txt: {fileID: 1356248340}
+  difficulty_sprites: []
+  Predator_sprites: []
+  difficulty_img: {fileID: 0}
+  predator_img: {fileID: 0}
+  winScreen: {fileID: 0}
+  seeds: []
+  finalMoves_txt: {fileID: 0}
 --- !u!114 &1726265768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8794,6 +8815,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneHandler: {fileID: 1726265766}
+  sceneNames:
+  - Marco_TestScene
+  - Marco_TestScene 1
   allScenes:
   - {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
   - {fileID: 102900000, guid: 5f679783609243a468c260542beb09cf, type: 3}
