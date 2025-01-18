@@ -10,8 +10,9 @@ public class LevelData : MonoBehaviour
     public int movesForMidScore;
     [Header("Difficulty")]
     public Difficulty difficulty;
+    [Header("Stars")]//ByEma
+    public int starsEarned;//ByEma
 
-    
     public void SaveRecord(string key, int value)
     {
         if (value == 0) return;

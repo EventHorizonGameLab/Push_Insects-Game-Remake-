@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ButterflyShader_Material
-  m_Shader: {fileID: -6465566751694194690, guid: 117f3529b02de2647a1b37945c84a5c6, type: 3}
+  m_Name: ScarabEmissive
+  m_Shader: {fileID: -6465566751694194690, guid: 491170ab94e557940a897702e89dddca, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -38,17 +38,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Emissive: -20
+    - _Emissive: 20
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Thickness: 1.05
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Scale: {r: 1.05, g: 1.05, b: 1.05, a: 0}
-    - _position: {r: 0, g: -0.009, b: 0, a: 0}
+    - _Color: {r: 1, g: 0.6954003, b: 0, a: 0}
+    - _Scale: {r: 1.05, g: 1, b: 1.02, a: 0}
+    - _position: {r: 0, g: -0.03, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4199718528655267153
+--- !u!114 &6793931767022642369
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
