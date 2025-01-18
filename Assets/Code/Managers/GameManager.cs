@@ -11,11 +11,17 @@ public class GameManager : MonoBehaviour
 
     public static Action OnMoveMade;
 
+    public static Action<IBlock, Vector3> OnMoveToRegister;
+
+    public static Action OnMoveUndone;
+
     public static Action OnLevelCompleted;
 
-    public static Action OnGoingNextLevel; //TODO: IMPLEMENTARE DOPO IMPLEMENTAZIONE SCORE
+   // public static Action OnGoingNextLevel;
 
     public static Action<bool> OnPlayerDragging;
+
+    [SerializeField] Score_Manager scoreManager;
 
 
     bool playerIsDragging;
@@ -42,8 +48,11 @@ public class GameManager : MonoBehaviour
         OnStartingGame += StartLevel;
         OnPlayerDragging += ChangePlayerState;
         OnMoveMade += UpdateLevelData;
-        OnLevelCompleted += GoToNextLevel; //TODO: DEVE DINVETARE SHOWSCORE
+        OnMoveUndone += UpdateLevelDataOnUndo;
+        OnLevelCompleted += EndLevel;
         UI_Manager.OnRequestingMenu += ReloadMainMenu;
+        UI_Manager.OnRequestingNextLevel += GoToNextLevel;
+        UI_Manager.OnRequestingLastScene += LoadSceneByStart;
 
     }
     private void OnDisable()
@@ -51,9 +60,11 @@ public class GameManager : MonoBehaviour
         OnPlayerDragging -= ChangePlayerState;
         OnStartingGame -= StartLevel;
         OnMoveMade -= UpdateLevelData;
-        OnLevelCompleted -= GoToNextLevel;
+        OnMoveUndone -= UpdateLevelDataOnUndo;
+        OnLevelCompleted -= EndLevel;
         UI_Manager.OnRequestingMenu -= ReloadMainMenu;
-
+        UI_Manager.OnRequestingNextLevel -= GoToNextLevel;
+        UI_Manager.OnRequestingLastScene -= LoadSceneByStart;
     }
     public bool PlayerIsDragging() => playerIsDragging;
 
@@ -68,32 +79,46 @@ public class GameManager : MonoBehaviour
         if (levelData == null) return;
         currentRecord = levelData.GetRecord("record");
         lastActiveScene = levelData.gameObject.scene.name;
+        SaveLastScene(lastActiveScene);
         UI_Manager.OnGivingGameUI(levelData);
     }
 
     void UpdateLevelData()
     {
         currentMovesCount++;
+
         if (currentMovesCount > currentRecord)
         {
             currentRecord = currentMovesCount;
-            levelData.SaveRecord("record", currentRecord);
         }
 
         UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
     }
 
+    void UpdateLevelDataOnUndo()
+    {
+        currentMovesCount--;
+
+        int savedRecord = levelData.GetRecord("record");
+        currentRecord = Mathf.Max(savedRecord, currentMovesCount);
+
+        UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
+    }
+
+
+
     void EndLevel()
     {
-        levelData = null;
-        currentMovesCount = 0;
-        currentRecord = 0;
-        // TODO: show score
+        Score finalScore = scoreManager.CalculateScore(levelData, currentMovesCount);
+        UI_Manager.OnWinScreen?.Invoke(finalScore, currentMovesCount);
     }
 
     void GoToNextLevel()
     {
-        EndLevel(); // DEBUG ONLY
+        levelData.SaveRecord("record", currentRecord);
+        levelData = null;
+        currentMovesCount = 0;
+        currentRecord = 0;
         SceneTracker.OnLoadNextLevel(lastActiveScene);
     }
 
@@ -104,8 +129,11 @@ public class GameManager : MonoBehaviour
             SceneHandler.OnUnloading?.Invoke(lastActiveScene);
         }
 
-        EndLevel();
+        levelData = null;
+        currentMovesCount = 0;
+        currentRecord = 0;
         CameraHandler.OnMenuLoaded?.Invoke();
+        UI_Manager.OnUpdateMoves?.Invoke(0, currentRecord); // impedisce il salvataggio se si esce dal livello
 
         // Aspetta che la scena venga completamente scaricata prima di resettare
         StartCoroutine(ResetSceneState());
@@ -122,4 +150,20 @@ public class GameManager : MonoBehaviour
         levelData = null;
     }
 
+    void SaveLastScene(string sceneName)
+    {
+        PlayerPrefs.SetString("LastScene", sceneName);
+        PlayerPrefs.Save();
+    }
+
+    string GetLastScene()
+    {
+        return PlayerPrefs.GetString("LastScene");
+    }
+
+    void LoadSceneByStart()
+    {
+        Debug.Log(GetLastScene());
+        SceneTracker.OnLoadTrackedLevel?.Invoke(GetLastScene());
+    }
 }

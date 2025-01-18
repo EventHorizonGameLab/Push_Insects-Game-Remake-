@@ -3,9 +3,18 @@ using UnityEngine;
 
 public class LevelData : MonoBehaviour
 {
+    [Header("Level ID")]
     public int levelID;
+    [Header("Moves")]
+    public int movesForMaxScore;
+    public int movesForMidScore;
+    [Header("Difficulty")]
+    public Difficulty difficulty;
+
+    
     public void SaveRecord(string key, int value)
     {
+        if (value == 0) return;
         string uniqueKey = GetUniqueKey(key);
         PlayerPrefs.SetInt(uniqueKey, value);
         PlayerPrefs.Save();
@@ -18,4 +27,10 @@ public class LevelData : MonoBehaviour
     }
 
     string GetUniqueKey(string baseKey)=> $"{baseKey}_Level_{levelID}";
+}
+public enum Difficulty
+{
+    BEGINNER,
+    INTERMEDIATE,
+    ADVANCED
 }
