@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     public static Action OnLevelCompleted;
 
-    public static Action OnGoingNextLevel;
+   // public static Action OnGoingNextLevel;
 
     public static Action<bool> OnPlayerDragging;
 
@@ -163,6 +163,7 @@ public class GameManager : MonoBehaviour
 
     void LoadSceneByStart()
     {
+        Debug.Log(GetLastScene());
         SceneTracker.OnLoadTrackedLevel?.Invoke(GetLastScene());
     }
 }

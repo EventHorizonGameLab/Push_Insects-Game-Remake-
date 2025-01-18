@@ -33,9 +33,9 @@ public class SceneButton : MonoBehaviour
         if (button != null)
         {
             button.onClick.AddListener(() => {
-                sceneHandler.LoadSceneFromName(sceneName); 
+                sceneHandler.LoadSceneFromName(sceneName);
                 CameraHandler.OnLevelLoaded?.Invoke();
-     
+
             });
         }
     }

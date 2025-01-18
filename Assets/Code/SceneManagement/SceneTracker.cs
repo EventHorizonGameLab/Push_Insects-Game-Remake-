@@ -45,6 +45,7 @@ public class SceneTracker : MonoBehaviour
         if (currentIndex + 1 < sceneNames.Count)
         {
             var nextSceneName = sceneNames[currentIndex + 1];
+            sceneHandler.UnloadSceneFromName(sceneName);
             sceneHandler.LoadSceneFromName(nextSceneName);
         }
         else

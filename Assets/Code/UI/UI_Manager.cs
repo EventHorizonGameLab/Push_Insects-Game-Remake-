@@ -118,7 +118,7 @@ public class UI_Manager : MonoBehaviour
 
     Sprite GetPredatorImage(Difficulty difficulty)
     {
-        if (Predator_sprites.Count < 0) return null;
+        if (Predator_sprites.Count == 0) return null;
         switch (difficulty)
         {
             case Difficulty.BEGINNER: return Predator_sprites[0];
@@ -185,6 +185,7 @@ public class UI_Manager : MonoBehaviour
     public void RequestLastScene()
     {
         OnRequestingLastScene();
+        CameraHandler.OnLevelLoaded?.Invoke();
     }
 
     public void GoToEasyLevelsScreen()
