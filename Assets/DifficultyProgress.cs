@@ -17,6 +17,8 @@ public class DifficultyProgress : ScriptableObject
 
     public event Action OnProgressUpdated;
 
+    private const string PlayerPrefsKey = "DifficultyProgress";
+
     public void UpdateLevelProgress(int levelID, int stars)
     {
         var level = levels.Find(l => l.levelID == levelID);
@@ -29,6 +31,7 @@ public class DifficultyProgress : ScriptableObject
 
             level.isCompleted = true;
             OnProgressUpdated?.Invoke();
+            SaveProgress();
 
             int nextIndex = levels.IndexOf(level) + 1;
             if (nextIndex < levels.Count)
@@ -60,5 +63,21 @@ public class DifficultyProgress : ScriptableObject
             }
         }
         return null;
+    }
+    public void SaveProgress()
+    {
+        string json = JsonUtility.ToJson(this);
+        PlayerPrefs.SetString(PlayerPrefsKey, json);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadProgress()
+    {
+        if (PlayerPrefs.HasKey(PlayerPrefsKey))
+        {
+            string json = PlayerPrefs.GetString(PlayerPrefsKey);
+            JsonUtility.FromJsonOverwrite(json, this);
+            OnProgressUpdated?.Invoke();
+        }
     }
 }
