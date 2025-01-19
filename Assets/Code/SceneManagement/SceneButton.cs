@@ -23,6 +23,7 @@ public class SceneButton : MonoBehaviour
 
     private void Awake()
     {
+        sceneHandler = GetComponent<SceneHandler>();
         if (sceneHandler == null)
         {
             Debug.LogError("SceneHandler not assigned");
