@@ -28,8 +28,14 @@ public class DifficultyProgress : ScriptableObject
             }
 
             level.isCompleted = true;
-
             OnProgressUpdated?.Invoke();
+
+            int nextIndex = levels.IndexOf(level) + 1;
+            if (nextIndex < levels.Count)
+            {
+                var nextLevel = levels[nextIndex];
+                OnProgressUpdated?.Invoke();
+            }
         }
     }
 
@@ -41,5 +47,18 @@ public class DifficultyProgress : ScriptableObject
     public bool AllLevelsPerfect()
     {
         return levels.TrueForAll(l => l.starsEarned == 3);
+    }
+
+    LevelButtonHandler FindHandlerByLevelID(int levelID)
+    {
+        var handlers = GameObject.FindObjectsOfType<LevelButtonHandler>();
+        foreach (var handler in handlers)
+        {
+            if (handler.levelID == levelID)
+            {
+                return handler;
+            }
+        }
+        return null;
     }
 }
