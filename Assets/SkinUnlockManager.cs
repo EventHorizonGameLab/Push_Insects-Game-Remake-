@@ -12,7 +12,28 @@ public class SkinUnlockManager : MonoBehaviour
 
     private void Start()
     {
+        if (beginnerProgress != null)
+            beginnerProgress.OnProgressUpdated += CheckUnlocks;
+
+        if (intermediateProgress != null)
+            intermediateProgress.OnProgressUpdated += CheckUnlocks;
+
+        if (advancedProgress != null)
+            advancedProgress.OnProgressUpdated += CheckUnlocks;
+
         CheckUnlocks();
+    }
+
+    private void OnDestroy()
+    {
+        if (beginnerProgress != null)
+            beginnerProgress.OnProgressUpdated -= CheckUnlocks;
+
+        if (intermediateProgress != null)
+            intermediateProgress.OnProgressUpdated -= CheckUnlocks;
+
+        if (advancedProgress != null)
+            advancedProgress.OnProgressUpdated -= CheckUnlocks;
     }
 
     public void CheckUnlocks()

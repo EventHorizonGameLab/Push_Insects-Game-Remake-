@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ public class DifficultyProgress : ScriptableObject
 
     public List<LevelProgress> levels = new List<LevelProgress>();
 
+    public event Action OnProgressUpdated;
+
     public void UpdateLevelProgress(int levelID, int stars)
     {
         var level = levels.Find(l => l.levelID == levelID);
@@ -23,7 +26,10 @@ public class DifficultyProgress : ScriptableObject
             {
                 level.starsEarned = stars;
             }
+
             level.isCompleted = true;
+
+            OnProgressUpdated?.Invoke();
         }
     }
 
