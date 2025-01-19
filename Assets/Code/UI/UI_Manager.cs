@@ -14,6 +14,7 @@ public class UI_Manager : MonoBehaviour
     public static event Action OnRequestingMenu;
     public static event Action OnRequestingNextLevel;
     public static event Action OnRequestingLastScene;
+    public Animator Animator;
 
     [Header("Panels")]
     [SerializeField] RectTransform mainMenuPanel;
@@ -34,6 +35,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] RectTransform winScreen;
     [SerializeField] List<RectTransform> seeds;
     [SerializeField] TMP_Text finalMoves_txt;
+    
 
     //---\\
     Vector3 mainScreenPos;
@@ -226,6 +228,27 @@ public class UI_Manager : MonoBehaviour
             screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * tweenValue, 0.6f);
         }
     }
+
+    public void GoToCreditsScreen()
+    {
+        foreach (RectTransform screen in allScreens)
+        {
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 25f);
+        }
+        if (Animator != null)
+        {
+            Animator.SetTrigger("BackButton");
+        }
+    }
+
+    public void GoBacktoAdvanced()
+    {
+        foreach (RectTransform screen in allScreens)
+        {
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.down * 1920 * 2, 0.6f);
+        }
+    }
+    
 
     #endregion
 
