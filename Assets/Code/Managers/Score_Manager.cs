@@ -14,7 +14,7 @@ public class Score_Manager : MonoBehaviour
 
 public enum Score
 {
-    MAX,
+    MIN,
     MID,
-    MIN
+    MAX
 }

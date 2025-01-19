@@ -105,11 +105,14 @@ public class GameManager : MonoBehaviour
         UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
     }
 
-
-
-    void EndLevel()
+    void EndLevel()//minimodificaByEma
     {
         Score finalScore = scoreManager.CalculateScore(levelData, currentMovesCount);
+
+        if (levelData != null)
+        {
+            levelData.CompleteLevel(currentMovesCount);
+        }
         UI_Manager.OnWinScreen?.Invoke(finalScore, currentMovesCount);
     }
 
