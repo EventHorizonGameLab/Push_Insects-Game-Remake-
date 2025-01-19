@@ -94,7 +94,6 @@ public class UI_Manager : MonoBehaviour
         record_txt.text = record != 0 ? record.ToString() : record_txt.text;
     }
 
-
     void ShowScore(Score score, int moves)
     {
         winScreen.gameObject.SetActive(true);
