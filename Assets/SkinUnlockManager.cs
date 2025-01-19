@@ -10,8 +10,12 @@ public class SkinUnlockManager : MonoBehaviour
     [SerializeField] private DifficultyProgress intermediateProgress;
     [SerializeField] private DifficultyProgress advancedProgress;
 
+    private bool[] unlockedSkins;
+
     private void Start()
     {
+        LoadSkinUnlocks();
+
         if (beginnerProgress != null)
             beginnerProgress.OnProgressUpdated += CheckUnlocks;
 
@@ -36,24 +40,105 @@ public class SkinUnlockManager : MonoBehaviour
             advancedProgress.OnProgressUpdated -= CheckUnlocks;
     }
 
+    private void LoadSkinUnlocks()
+    {
+        unlockedSkins = new bool[skinButtons.Length];
+
+        for (int i = 0; i < skinButtons.Length; i++)
+        {
+            unlockedSkins[i] = PlayerPrefs.GetInt($"SkinUnlocked_{i}", 0) == 1;
+        }
+
+        for (int i = 0; i < unlockedSkins.Length; i++)
+        {
+            if (unlockedSkins[i])
+            {
+                skinButtons[i]?.SetActive(true);
+            }
+        }
+    }
+
+    private void SaveSkinUnlocks()
+    {
+        for (int i = 0; i < unlockedSkins.Length; i++)
+        {
+            PlayerPrefs.SetInt($"SkinUnlocked_{i}", unlockedSkins[i] ? 1 : 0);
+        }
+        PlayerPrefs.Save();
+    }
+
     public void CheckUnlocks()
     {
+        bool updated = false;
+
         if (beginnerProgress != null && beginnerProgress.AllLevelsCompleted())
-            skinButtons[0]?.SetActive(true);
+        {
+            if (!skinButtons[0].activeSelf)
+            {
+                skinButtons[0]?.SetActive(true);
+                updated = true;
+            }
+        }
 
         if (beginnerProgress != null && beginnerProgress.AllLevelsPerfect())
-            skinButtons[1]?.SetActive(true);
+        {
+            if (!skinButtons[1].activeSelf)
+            {
+                skinButtons[1]?.SetActive(true);
+                updated = true;
+            }
+        }
 
         if (intermediateProgress != null && intermediateProgress.AllLevelsCompleted())
-            skinButtons[2]?.SetActive(true);
+        {
+            if (!skinButtons[2].activeSelf)
+            {
+                skinButtons[2]?.SetActive(true);
+                updated = true;
+            }
+        }
 
         if (intermediateProgress != null && intermediateProgress.AllLevelsPerfect())
-            skinButtons[3]?.SetActive(true);
+        {
+            if (!skinButtons[3].activeSelf)
+            {
+                skinButtons[3]?.SetActive(true);
+                updated = true;
+            }
+        }
 
         if (advancedProgress != null && advancedProgress.AllLevelsCompleted())
-            skinButtons[4]?.SetActive(true);
+        {
+            if (!skinButtons[4].activeSelf)
+            {
+                skinButtons[4]?.SetActive(true);
+                updated = true;
+            }
+        }
 
         if (advancedProgress != null && advancedProgress.AllLevelsPerfect())
-            skinButtons[5]?.SetActive(true);
+        {
+            if (!skinButtons[5].activeSelf)
+            {
+                skinButtons[5]?.SetActive(true);
+                updated = true;
+            }
+        }
+
+        if (updated)
+        {
+            SaveSkinUnlocks();
+        }
+    }
+    private bool UnlockSkin(int index)
+    {
+        if (index < 0 || index >= unlockedSkins.Length || unlockedSkins[index])
+        {
+            return false;
+        }
+
+        unlockedSkins[index] = true;
+        skinButtons[index]?.SetActive(true);
+        return true;
     }
 }
