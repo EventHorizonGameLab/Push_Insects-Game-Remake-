@@ -39,21 +39,21 @@ public class SkinUnlockManager : MonoBehaviour
     public void CheckUnlocks()
     {
         if (beginnerProgress != null && beginnerProgress.AllLevelsCompleted())
-            skinButtons[1]?.SetActive(true);
+            skinButtons[0]?.SetActive(true);
 
         if (beginnerProgress != null && beginnerProgress.AllLevelsPerfect())
-            skinButtons[2]?.SetActive(true);
+            skinButtons[1]?.SetActive(true);
 
         if (intermediateProgress != null && intermediateProgress.AllLevelsCompleted())
-            skinButtons[3]?.SetActive(true);
+            skinButtons[2]?.SetActive(true);
 
         if (intermediateProgress != null && intermediateProgress.AllLevelsPerfect())
-            skinButtons[4]?.SetActive(true);
+            skinButtons[3]?.SetActive(true);
 
         if (advancedProgress != null && advancedProgress.AllLevelsCompleted())
-            skinButtons[5]?.SetActive(true);
+            skinButtons[4]?.SetActive(true);
 
         if (advancedProgress != null && advancedProgress.AllLevelsPerfect())
-            skinButtons[6]?.SetActive(true);
+            skinButtons[5]?.SetActive(true);
     }
 }
