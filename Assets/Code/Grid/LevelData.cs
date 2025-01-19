@@ -38,6 +38,7 @@ public class LevelData : MonoBehaviour
         {
             progress.UpdateLevelProgress(levelID, stars);
         }
+        Debug.Log($"Livello {levelID} completato con {stars} stelle.");
     }
 
     private int CalculateStars(int movesUsed)
