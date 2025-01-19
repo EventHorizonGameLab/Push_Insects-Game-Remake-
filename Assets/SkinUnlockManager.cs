@@ -5,10 +5,10 @@ public class SkinUnlockManager : MonoBehaviour
     [Header("Skin Buttons")]
     [SerializeField] private GameObject[] skinButtons;
 
-    [Header("Level Groups")]
-    [SerializeField] private LevelData[] beginnerLevels;
-    [SerializeField] private LevelData[] intermediateLevels;
-    [SerializeField] private LevelData[] advancedLevels;
+    [Header("Difficulty Progress")]
+    [SerializeField] private DifficultyProgress beginnerProgress;
+    [SerializeField] private DifficultyProgress intermediateProgress;
+    [SerializeField] private DifficultyProgress advancedProgress;
 
     private void Start()
     {
@@ -17,32 +17,22 @@ public class SkinUnlockManager : MonoBehaviour
 
     public void CheckUnlocks()
     {
-        if (AreLevelsCompleted(beginnerLevels, 1))
+        if (beginnerProgress != null && beginnerProgress.AllLevelsCompleted())
             skinButtons[1]?.SetActive(true);
 
-        if (AreLevelsCompleted(beginnerLevels, 3))
+        if (beginnerProgress != null && beginnerProgress.AllLevelsPerfect())
             skinButtons[2]?.SetActive(true);
 
-        if (AreLevelsCompleted(intermediateLevels, 1))
+        if (intermediateProgress != null && intermediateProgress.AllLevelsCompleted())
             skinButtons[3]?.SetActive(true);
 
-        if (AreLevelsCompleted(intermediateLevels, 3))
+        if (intermediateProgress != null && intermediateProgress.AllLevelsPerfect())
             skinButtons[4]?.SetActive(true);
 
-        if (AreLevelsCompleted(advancedLevels, 1))
+        if (advancedProgress != null && advancedProgress.AllLevelsCompleted())
             skinButtons[5]?.SetActive(true);
 
-        if (AreLevelsCompleted(advancedLevels, 3))
+        if (advancedProgress != null && advancedProgress.AllLevelsPerfect())
             skinButtons[6]?.SetActive(true);
-    }
-
-    private bool AreLevelsCompleted(LevelData[] levels, int requiredStars)
-    {
-        foreach (LevelData level in levels)
-        {
-            if (level.starsEarned < requiredStars)
-                return false;
-        }
-        return true;
     }
 }

@@ -10,8 +10,9 @@ public class LevelData : MonoBehaviour
     public int movesForMidScore;
     [Header("Difficulty")]
     public Difficulty difficulty;
-    [Header("Stars")]//ByEma
-    public int starsEarned;//ByEma
+
+    [Header("Progress")]
+    [SerializeField] private DifficultyProgress progress;
 
     public void SaveRecord(string key, int value)
     {
@@ -27,7 +28,27 @@ public class LevelData : MonoBehaviour
         return PlayerPrefs.HasKey(uniqueKey) ? PlayerPrefs.GetInt(uniqueKey) : 0;
     }
 
-    string GetUniqueKey(string baseKey)=> $"{baseKey}_Level_{levelID}";
+    string GetUniqueKey(string baseKey) => $"{baseKey}_Level_{levelID}";
+
+    public void CompleteLevel(int movesUsed)
+    {
+        int stars = CalculateStars(movesUsed);
+
+        if (progress != null)
+        {
+            progress.UpdateLevelProgress(levelID, stars);
+        }
+    }
+
+    private int CalculateStars(int movesUsed)
+    {
+        if (movesUsed <= movesForMaxScore)
+            return 3;
+        else if (movesUsed <= movesForMidScore)
+            return 2;
+        else
+            return 1;
+    }
 }
 public enum Difficulty
 {
