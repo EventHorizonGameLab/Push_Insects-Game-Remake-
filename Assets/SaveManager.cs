@@ -4,6 +4,7 @@ using UnityEngine;
 public class SaveManager : MonoBehaviour
 {
     [SerializeField] private List<DifficultyProgress> difficultyProgresses;
+    [SerializeField] private GameObject[] skinButtons;
 
     private void Awake()
     {
@@ -57,10 +58,11 @@ public class SaveManager : MonoBehaviour
             }
         }
     }
+
     public void ResetAllProgress()
     {
         Debug.Log("SaveManager: Resetting all progress...");
-        
+
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
         Debug.Log("PlayerPrefs cleared.");
@@ -74,9 +76,32 @@ public class SaveManager : MonoBehaviour
                     level.starsEarned = 0;
                     level.isCompleted = false;
                 }
+
                 progress.SaveProgress();
+
                 Debug.Log($"Progress reset for {progress.name}");
             }
         }
+
+        if (skinButtons != null && skinButtons.Length > 0)
+        {
+            for (int i = 0; i < skinButtons.Length; i++)
+            {
+                if (skinButtons[i] != null)
+                {
+                    skinButtons[i].SetActive(i == 0);
+                }
+            }
+
+            var skinButton = skinButtons[0].GetComponent<SkinButton>();
+            if (skinButton != null)
+            {
+                Debug.Log("Calling SetSkin on the first SkinButton.");
+                skinButton.SendMessage("SetSkin");
+            }
+        }
+
+        LoadAllProgress();
+        Debug.Log("Progress reset complete and loaded into the game.");
     }
 }
