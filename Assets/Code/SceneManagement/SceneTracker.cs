@@ -6,6 +6,7 @@ public class SceneTracker : MonoBehaviour
 {
     public static Action<string> OnLoadNextLevel;
     public static Action<string> OnLoadTrackedLevel;
+    public static event Action<bool> OnLevelListEnded;
 
     [SerializeField] SceneHandler sceneHandler;
     [SerializeField] List<string> sceneNames = new List<string>();
@@ -47,10 +48,15 @@ public class SceneTracker : MonoBehaviour
             var nextSceneName = sceneNames[currentIndex + 1];
             sceneHandler.UnloadSceneFromName(sceneName);
             sceneHandler.LoadSceneFromName(nextSceneName);
+
+            int nextIndex = sceneNames.IndexOf(nextSceneName);
+            if(nextIndex + 1 > sceneNames.Count) OnLevelListEnded(true);
         }
         else
         {
-            Debug.Log("No scene available");
+            UI_Manager ui = GetComponent<UI_Manager>();
+            ui.RequestMainMenu();
+            Debug.Log("All Levels Played");
             return;
         }
     }

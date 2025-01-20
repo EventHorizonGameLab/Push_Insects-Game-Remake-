@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     public static Action OnLevelCompleted;
 
-   // public static Action OnGoingNextLevel;
+    // public static Action OnGoingNextLevel;
 
     public static Action<bool> OnPlayerDragging;
 
@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
 
     bool playerIsDragging;
+    bool gameIsCompleted;
 
     LevelData levelData;
     string lastActiveScene;
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
         UI_Manager.OnRequestingMenu += ReloadMainMenu;
         UI_Manager.OnRequestingNextLevel += GoToNextLevel;
         UI_Manager.OnRequestingLastScene += LoadSceneByStart;
+        SceneTracker.OnLevelListEnded += SetGameAsCompleted;
 
     }
     private void OnDisable()
@@ -65,6 +67,7 @@ public class GameManager : MonoBehaviour
         UI_Manager.OnRequestingMenu -= ReloadMainMenu;
         UI_Manager.OnRequestingNextLevel -= GoToNextLevel;
         UI_Manager.OnRequestingLastScene -= LoadSceneByStart;
+        SceneTracker.OnLevelListEnded -= SetGameAsCompleted;
     }
     public bool PlayerIsDragging() => playerIsDragging;
 
@@ -118,11 +121,20 @@ public class GameManager : MonoBehaviour
 
     void GoToNextLevel()
     {
-        levelData.SaveRecord("record", currentRecord);
-        levelData = null;
-        currentMovesCount = 0;
-        currentRecord = 0;
-        SceneTracker.OnLoadNextLevel(lastActiveScene);
+        if (gameIsCompleted)
+        {
+            Debug.Log(gameIsCompleted);
+            ReloadMainMenu();
+            return;
+        }
+        else
+        {
+            levelData.SaveRecord("record", currentRecord);
+            levelData = null;
+            currentMovesCount = 0;
+            currentRecord = 0;
+            SceneTracker.OnLoadNextLevel(lastActiveScene);
+        }
     }
 
     void ReloadMainMenu()
@@ -169,4 +181,6 @@ public class GameManager : MonoBehaviour
         Debug.Log(GetLastScene());
         SceneTracker.OnLoadTrackedLevel?.Invoke(GetLastScene());
     }
+
+    void SetGameAsCompleted(bool value) => gameIsCompleted = value;
 }

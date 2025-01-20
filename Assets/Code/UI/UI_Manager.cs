@@ -11,7 +11,7 @@ public class UI_Manager : MonoBehaviour
     public static Action<int, int> OnUpdateMoves;
     public static Action<LevelData> OnGivingGameUI;
     public static Action<Score, int> OnWinScreen;
-    public static event Action OnRequestingMenu;
+    public static Action OnRequestingMenu;
     public static event Action OnRequestingNextLevel;
     public static event Action OnRequestingLastScene;
     public Animator Animator;
@@ -21,6 +21,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] List<RectTransform> allScreens;
     [SerializeField] GameObject optionPanel;
     [SerializeField] GameObject inGameView;
+    [SerializeField] GameObject interactionPanel;
     [Header("Texts")]
     [SerializeField] TMP_Text record_txt;
     [SerializeField] TMP_Text currentMoves_txt;
@@ -35,7 +36,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] RectTransform winScreen;
     [SerializeField] List<RectTransform> seeds;
     [SerializeField] TMP_Text finalMoves_txt;
-    
+
 
     //---\\
     Vector3 mainScreenPos;
@@ -65,6 +66,7 @@ public class UI_Manager : MonoBehaviour
 
     void InitMain()
     {
+        interactionPanel.SetActive(false);
         SaveInitialScreensPosition();
         mainScreenPos = mainMenuPanel.anchoredPosition;
         mainMenuPanel.gameObject.SetActive(true);
@@ -163,7 +165,10 @@ public class UI_Manager : MonoBehaviour
         foreach (RectTransform r in allScreens) r.gameObject.SetActive(false);
     }
 
+    void DisableScreenInteraction()
+    {
 
+    }
 
     //-- Buttons Calls --\\
 
@@ -191,9 +196,10 @@ public class UI_Manager : MonoBehaviour
 
     public void GoToEasyLevelsScreen()
     {
+        interactionPanel.gameObject.SetActive(true);
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920, 0.6f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920, 0.6f).OnComplete(() => interactionPanel.gameObject.SetActive(false));
         }
     }
 
@@ -201,39 +207,43 @@ public class UI_Manager : MonoBehaviour
     {
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 0.6f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 0.6f).OnComplete(() => interactionPanel.gameObject.SetActive(false));
         }
     }
 
     public void GoToAdvancedLevelsScreen()
     {
+        interactionPanel.gameObject.SetActive(true);
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 3, 0.6f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 3, 0.6f).OnComplete(() => interactionPanel.gameObject.SetActive(false));
         }
     }
 
     public void GoToSkinScreen()
     {
+        interactionPanel.gameObject.SetActive(true);
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * -1920, 0.6f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * -1920, 0.6f).OnComplete(() => interactionPanel.gameObject.SetActive(false));
         }
     }
 
     public void SlideToMain(float tweenValue)
     {
+        interactionPanel.gameObject.SetActive(true);
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * tweenValue, 0.6f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * tweenValue, 0.6f).OnComplete(() => interactionPanel.gameObject.SetActive(false));
         }
     }
 
     public void GoToCreditsScreen()
     {
+        interactionPanel.gameObject.SetActive(true);
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 25f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.up * 1920 * 2, 25f).OnComplete(() => interactionPanel.gameObject.SetActive(false));
         }
         if (Animator != null)
         {
@@ -242,13 +252,15 @@ public class UI_Manager : MonoBehaviour
     }
 
     public void GoBacktoAdvanced()
+
     {
+        interactionPanel.gameObject.SetActive(true);
         foreach (RectTransform screen in allScreens)
         {
-            screen.DOAnchorPos(screen.anchoredPosition + Vector2.down * 1920 * 2, 0.6f);
+            screen.DOAnchorPos(screen.anchoredPosition + Vector2.down * 1920 * 2, 0.6f).OnComplete(() => interactionPanel.gameObject.SetActive(false));
         }
     }
-    
+
 
     #endregion
 
