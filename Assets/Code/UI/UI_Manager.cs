@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 
 public class UI_Manager : MonoBehaviour
@@ -28,7 +29,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text levelID_txt;
     [Header("Sprites")]
     [SerializeField] List<Sprite> difficulty_sprites;
-    [SerializeField] List<Sprite> Predator_sprites;
+    [SerializeField] List<GameObject> Predator_sprites;
     [Header("Image Field")]
     [SerializeField] Image difficulty_img;
     [SerializeField] Image predator_img;
@@ -85,8 +86,9 @@ public class UI_Manager : MonoBehaviour
         levelID_txt.text = levelData.levelID.ToString();
         currentMoves_txt.text = "0";
         HandleActivationList(seeds, false);
+        HandleActivationList(Predator_sprites, false);
         difficulty_img.sprite = GetDifficultyImage(levelData.difficulty);
-        predator_img.sprite = GetPredatorImage(levelData.difficulty);
+        GetPredatorImage(levelData.difficulty);
     }
 
 
@@ -119,15 +121,20 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-    Sprite GetPredatorImage(Difficulty difficulty)
+    void GetPredatorImage(Difficulty difficulty)
     {
-        if (Predator_sprites.Count == 0) return null;
+        if (Predator_sprites.Count == 0) return;
         switch (difficulty)
         {
-            case Difficulty.BEGINNER: return Predator_sprites[0];
-            case Difficulty.INTERMEDIATE: return Predator_sprites[1];
-            case Difficulty.ADVANCED: return Predator_sprites[2];
-            default: return null;
+            case Difficulty.BEGINNER:
+                Predator_sprites[0].SetActive(true);
+                break;
+            case Difficulty.INTERMEDIATE:
+                Predator_sprites[1].SetActive(true);
+                break;
+            case Difficulty.ADVANCED:
+                Predator_sprites[2].SetActive(true);
+                break;
         }
     }
 
