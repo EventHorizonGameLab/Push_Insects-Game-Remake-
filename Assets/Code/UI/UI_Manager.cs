@@ -27,6 +27,8 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text record_txt;
     [SerializeField] TMP_Text currentMoves_txt;
     [SerializeField] TMP_Text levelID_txt;
+    [Header("Buttons")]
+    [SerializeField] Button undo_btn;
     [Header("Sprites")]
     [SerializeField] List<Sprite> difficulty_sprites;
     [SerializeField] List<GameObject> Predator_sprites;
@@ -56,6 +58,7 @@ public class UI_Manager : MonoBehaviour
         OnUpdateMoves += UpdateMoves;
         OnRequestingMenu += InitMain;
         OnWinScreen += ShowScore;
+        Block_Door.OnDoorOpen += DisableUndo;
     }
     private void OnDisable()
     {
@@ -63,6 +66,7 @@ public class UI_Manager : MonoBehaviour
         OnUpdateMoves -= UpdateMoves;
         OnRequestingMenu -= InitMain;
         OnWinScreen -= ShowScore;
+        Block_Door.OnDoorOpen -= DisableUndo;
     }
 
     void InitMain()
@@ -76,6 +80,7 @@ public class UI_Manager : MonoBehaviour
         winScreen.gameObject.SetActive(false);
         record_txt.text = string.Empty;
         currentMoves_txt.text = string.Empty;
+        
     }
 
     void InitGameUI(LevelData levelData)
@@ -89,6 +94,7 @@ public class UI_Manager : MonoBehaviour
         HandleActivationList(Predator_sprites, false);
         difficulty_img.sprite = GetDifficultyImage(levelData.difficulty);
         GetPredatorImage(levelData.difficulty);
+        DisableUndo(false);
     }
 
 
@@ -152,7 +158,6 @@ public class UI_Manager : MonoBehaviour
         for (int i = 0; i < allScreens.Count; i++)
         {
             initialScreenPos.Add(allScreens[i].anchoredPosition);
-            Debug.Log(allScreens[i].anchoredPosition);
         }
     }
 
@@ -172,9 +177,10 @@ public class UI_Manager : MonoBehaviour
         foreach (RectTransform r in allScreens) r.gameObject.SetActive(false);
     }
 
-    void DisableScreenInteraction()
+    void DisableUndo(bool value)
     {
-
+        undo_btn.interactable = !value;
+        Debug.Log(undo_btn.interactable);
     }
 
     //-- Buttons Calls --\\

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class State_Manager : MonoBehaviour
 {
+    public static event Action OnReset;
 
     private Stack<(IBlock block, Vector3 previousPosition)> globalMoves = new Stack<(IBlock, Vector3)>();
 
@@ -59,6 +60,7 @@ public class State_Manager : MonoBehaviour
                     blockPositions[lastMove.block].Pop();
                 }
             }
+            OnReset();
             Debug.Log("All moves undone.");
         }
         else

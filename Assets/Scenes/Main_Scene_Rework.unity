@@ -890,7 +890,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 2a4cc4cb9fe41234ba42e357a1c0cf9e, type: 3}
   m_Resource: {fileID: 8300000, guid: 2a4cc4cb9fe41234ba42e357a1c0cf9e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.45
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -7432,10 +7432,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 176122909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 186, y: -112.056946}
-  m_SizeDelta: {x: 200, y: 200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &363409462
 MonoBehaviour:
@@ -10676,10 +10676,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 176122909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 461, y: -112.056946}
-  m_SizeDelta: {x: 200, y: 200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &497761785
 MonoBehaviour:
@@ -16691,10 +16691,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 176122909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 736, y: -112.056946}
-  m_SizeDelta: {x: 200, y: 200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &732586953
 MonoBehaviour:
@@ -16721,7 +16721,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.85660374, g: 0.26991096, b: 0.26991096, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -19417,7 +19417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &849118279
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36266,6 +36266,7 @@ MonoBehaviour:
   record_txt: {fileID: 1658489906}
   currentMoves_txt: {fileID: 969280651}
   levelID_txt: {fileID: 1356248340}
+  undo_btn: {fileID: 732586953}
   difficulty_sprites:
   - {fileID: -1216511682, guid: 163ca7f46f04a5142b5cd0430f9b05c0, type: 3}
   - {fileID: 183328377, guid: 163ca7f46f04a5142b5cd0430f9b05c0, type: 3}
