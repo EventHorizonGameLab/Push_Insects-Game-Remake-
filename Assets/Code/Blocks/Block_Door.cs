@@ -12,12 +12,23 @@ public class Block_Door : MonoBehaviour
     private Animator animator;
     Rigidbody rb;
     GameObject keyChild;
+    [SerializeField] Collider doorCollider;
+    Vector3 initialPosition;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         keyChild = transform.GetChild(0).gameObject;
+        initialPosition = transform.position;
+    }
+    private void OnEnable()
+    {
+        State_Manager.OnReset += ResetDoor;
+    }
+    private void OnDisable()
+    {
+        State_Manager.OnReset -= ResetDoor;
     }
     public void OpenDoor()
     {
@@ -35,5 +46,15 @@ public class Block_Door : MonoBehaviour
                 animator.SetTrigger("Green");
                 break;
         }
+    }
+
+    void ResetDoor()
+    {
+        
+        doorCollider.enabled = true;
+        keyChild.SetActive(true);
+        animator.Rebind();
+        animator.Update(0f);
+        transform.position = initialPosition;
     }
 }
