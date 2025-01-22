@@ -57,6 +57,7 @@ public class SaveManager : MonoBehaviour
                 progress.LoadProgress();
             }
         }
+        InvokeCheckIfNextLevelOnButtons();
     }
 
     public void ResetAllProgress()
@@ -103,5 +104,16 @@ public class SaveManager : MonoBehaviour
 
         LoadAllProgress();
         Debug.Log("Progress reset complete and loaded into the game.");
+    }
+    private void InvokeCheckIfNextLevelOnButtons()
+    {
+        var levelButtons = Object.FindObjectsByType<LevelButtonHandler>(FindObjectsSortMode.None);
+
+        foreach (var button in levelButtons)
+        {
+            button.CheckIfNextLevel();
+        }
+
+        Debug.Log("Called CheckIfNextLevel on all LevelButtonHandler instances.");
     }
 }
