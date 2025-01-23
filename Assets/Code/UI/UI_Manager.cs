@@ -39,6 +39,9 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] RectTransform winScreen;
     [SerializeField] List<RectTransform> seeds;
     [SerializeField] TMP_Text finalMoves_txt;
+    [Header("Tutorial")]
+    [SerializeField] List<GameObject> tutorial_section;
+
 
 
     //---\\
@@ -80,7 +83,7 @@ public class UI_Manager : MonoBehaviour
         winScreen.gameObject.SetActive(false);
         record_txt.text = string.Empty;
         currentMoves_txt.text = string.Empty;
-        
+        HandleActivationList(tutorial_section, false);
     }
 
     void InitGameUI(LevelData levelData)
@@ -93,11 +96,29 @@ public class UI_Manager : MonoBehaviour
         HandleActivationList(seeds, false);
         HandleActivationList(Predator_sprites, false);
         difficulty_img.sprite = GetDifficultyImage(levelData.difficulty);
-        GetPredatorImage(levelData.difficulty);
+        //GetPredatorImage(levelData.difficulty); DEPRECATED
+        ShowTutorial(levelData.levelID);
         DisableUndo(false);
     }
 
-
+    void ShowTutorial(int levelID)
+    {
+        switch (levelID)
+        {
+            case 1:
+                tutorial_section[0].SetActive(true);
+                tutorial_section[1].SetActive(true);
+                break;
+            case 2:
+                tutorial_section[0].SetActive(true);
+                tutorial_section[2].SetActive(true);
+                break;
+            case 3:
+                tutorial_section[0].SetActive(true);
+                tutorial_section[3].SetActive(true);
+                break;
+        }
+    }
 
 
     void UpdateMoves(int moves, int record)
