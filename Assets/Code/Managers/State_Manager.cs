@@ -14,11 +14,13 @@ public class State_Manager : MonoBehaviour
     {
         GameManager.OnMoveToRegister += RegisterMove;
         GameManager.OnLevelCompleted += ClearAll;
+        OnReset += ClearAll;
     }
     private void OnDisable()
     {
         GameManager.OnMoveToRegister -= RegisterMove;
         GameManager.OnLevelCompleted -= ClearAll;
+        OnReset -= ClearAll;
     }
 
 

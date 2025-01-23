@@ -16,7 +16,6 @@ public class LevelData : MonoBehaviour
 
     public void SaveRecord(string key, int value)
     {
-        if (value == 0) return;
         string uniqueKey = GetUniqueKey(key);
         PlayerPrefs.SetInt(uniqueKey, value);
         PlayerPrefs.Save();
@@ -50,6 +49,7 @@ public class LevelData : MonoBehaviour
         else
             return 1;
     }
+
 }
 public enum Difficulty
 {

@@ -103,7 +103,7 @@ public class UI_Manager : MonoBehaviour
     void UpdateMoves(int moves, int record)
     {
         currentMoves_txt.text = moves.ToString();
-        record_txt.text = record != 0 ? record.ToString() : record_txt.text;
+        record_txt.text = record.ToString();
     }
 
     void ShowScore(Score score, int moves)

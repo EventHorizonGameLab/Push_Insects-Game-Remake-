@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     int currentMovesCount;
     int currentRecord;
+    int temporaryRecord;
 
     private void Awake()
     {
@@ -48,8 +50,8 @@ public class GameManager : MonoBehaviour
     {
         OnStartingGame += StartLevel;
         OnPlayerDragging += ChangePlayerState;
-        OnMoveMade += UpdateLevelData;
-        OnMoveUndone += UpdateLevelDataOnUndo;
+        OnMoveMade += UpdateUI;
+        OnMoveUndone += UpdateUIUndo;
         OnLevelCompleted += EndLevel;
         UI_Manager.OnRequestingMenu += ReloadMainMenu;
         UI_Manager.OnRequestingNextLevel += GoToNextLevel;
@@ -61,8 +63,8 @@ public class GameManager : MonoBehaviour
     {
         OnPlayerDragging -= ChangePlayerState;
         OnStartingGame -= StartLevel;
-        OnMoveMade -= UpdateLevelData;
-        OnMoveUndone -= UpdateLevelDataOnUndo;
+        OnMoveMade -= UpdateUI;
+        OnMoveUndone -= UpdateUIUndo;
         OnLevelCompleted -= EndLevel;
         UI_Manager.OnRequestingMenu -= ReloadMainMenu;
         UI_Manager.OnRequestingNextLevel -= GoToNextLevel;
@@ -86,30 +88,49 @@ public class GameManager : MonoBehaviour
         UI_Manager.OnGivingGameUI(levelData);
     }
 
-    void UpdateLevelData()
+    void UpdateUI()
     {
         currentMovesCount++;
 
-        if (currentMovesCount > currentRecord)
-        {
-            currentRecord = currentMovesCount;
-        }
+        if (currentRecord == 0 || temporaryRecord < currentRecord) temporaryRecord = currentMovesCount;
 
-        UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
+        if (currentRecord != 0 && temporaryRecord > currentRecord) temporaryRecord = currentRecord;
+        
+
+        int valueToShow = currentRecord > temporaryRecord ? currentRecord : temporaryRecord;
+        UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, valueToShow);
+        Debug.Log("il valore attuale é" +temporaryRecord);
     }
 
-    void UpdateLevelDataOnUndo()
+    void UpdateLevelData()
+    {
+        if (currentRecord > 0)
+            temporaryRecord = temporaryRecord < currentRecord ? temporaryRecord : currentRecord;
+        
+        levelData.SaveRecord("record", temporaryRecord);
+    }
+
+    void UpdateUIUndo()
     {
         currentMovesCount--;
 
-        int savedRecord = levelData.GetRecord("record");
-        currentRecord = Mathf.Max(savedRecord, currentMovesCount);
-
-        UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, currentRecord);
+        temporaryRecord = (int)MathF.Max(currentMovesCount, currentRecord);
+        UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, temporaryRecord);
+        Debug.Log($"il valore salvato al momento é:{currentRecord} mentre il temporary é {temporaryRecord}");
     }
 
     void EndLevel()//minimodificaByEma
     {
+        if (currentRecord == 0 || temporaryRecord < currentRecord) temporaryRecord = currentMovesCount;
+
+        if (currentRecord != 0 && temporaryRecord > currentRecord) temporaryRecord = currentRecord;
+
+
+        int valueToShow = currentRecord > temporaryRecord ? currentRecord : temporaryRecord;
+        UI_Manager.OnUpdateMoves?.Invoke(currentMovesCount, valueToShow);
+        UpdateLevelData();
+        temporaryRecord = 0;
+        
         Score finalScore = scoreManager.CalculateScore(levelData, currentMovesCount);
 
         if (levelData != null)
@@ -129,7 +150,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            levelData.SaveRecord("record", currentRecord);
+            
             levelData = null;
             currentMovesCount = 0;
             currentRecord = 0;
@@ -148,9 +169,7 @@ public class GameManager : MonoBehaviour
         currentMovesCount = 0;
         currentRecord = 0;
         CameraHandler.OnMenuLoaded?.Invoke();
-        UI_Manager.OnUpdateMoves?.Invoke(0, currentRecord); // impedisce il salvataggio se si esce dal livello
-
-        // Aspetta che la scena venga completamente scaricata prima di resettare
+        
         StartCoroutine(ResetSceneState());
     }
 
@@ -178,7 +197,6 @@ public class GameManager : MonoBehaviour
 
     void LoadSceneByStart()
     {
-        Debug.Log(GetLastScene());
         SceneTracker.OnLoadTrackedLevel?.Invoke(GetLastScene());
     }
 
