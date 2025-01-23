@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnlockAllLevelsButton : MonoBehaviour
+public class PierCode : MonoBehaviour
 {
     [Header("Configuration")]
     [SerializeField] private DifficultyProgress difficultyProgress; // Collegare lo ScriptableObject della categoria
