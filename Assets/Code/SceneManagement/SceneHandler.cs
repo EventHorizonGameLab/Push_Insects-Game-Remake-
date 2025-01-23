@@ -61,13 +61,13 @@ public class SceneHandler : MonoBehaviour
 
         if (!SceneManager.GetSceneByName(sceneName).isLoaded)
         {
-            Debug.LogError($"[UnloadSceneFromName] La scena '{sceneName}' non è caricata.");
+            Debug.LogError($"[UnloadSceneFromName] La scena '{sceneName}' non ï¿½ caricata.");
             return;
         }
 
         if (isLoading)
         {
-            Debug.LogWarning("[UnloadSceneFromName] Una scena è già in fase di caricamento/scaricamento.");
+            Debug.LogWarning("[UnloadSceneFromName] Una scena ï¿½ giï¿½ in fase di caricamento/scaricamento.");
             return;
         }
 
@@ -84,6 +84,8 @@ public class SceneHandler : MonoBehaviour
             loadingImage.SetActive(true);
         }
 
+        yield return new WaitForSeconds (0.5f);
+
         // Verifica e scarica la scena corrente
         if (!string.IsNullOrEmpty(currentScene))
         {
@@ -99,7 +101,7 @@ public class SceneHandler : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"[LoadSceneCoroutine] La scena '{currentScene}' non è valida o non è caricata.");
+                Debug.LogWarning($"[LoadSceneCoroutine] La scena '{currentScene}' non ï¿½ valida o non ï¿½ caricata.");
             }
         }
 

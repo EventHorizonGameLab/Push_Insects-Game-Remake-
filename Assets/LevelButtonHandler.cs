@@ -10,6 +10,7 @@ public class LevelButtonHandler : MonoBehaviour
 
     [Header("Difficulty Progress")]
     [SerializeField] private DifficultyProgress difficultyProgress;
+    public DifficultyProgress DifficultyProgress => difficultyProgress;
 
     [Header("Button Components")]
     [SerializeField] private GameObject interactableButton;
